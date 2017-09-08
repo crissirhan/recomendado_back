@@ -30,4 +30,4 @@ class Review(models.Model):
     date = models.DateTimeField(null=False)
 
     def __str__(self):
-        return 'Review de: ' + self.client.name + ' a: ' + self.professional.name
+        return 'Review from: ' + self.client.name + ' to: ' + self.professional.name + '. Date: ' + self.date.strftime(" %d %B, %Y")
