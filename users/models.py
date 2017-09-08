@@ -17,3 +17,8 @@ class Client(User):
 
 class Professional(User):
     profession = models.CharField(max_length=100)
+
+class Review(models.Model):
+    client = models.ForeignKey('Client')
+    professional = models.ForeignKey('Professional')
+    rating = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
