@@ -18,6 +18,13 @@ from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from users.views import ClientViewSet, ProfessionalViewSet, ReviewViewSet
 
-urlpatterns = [
+router = DefaultRouter()
+router.register(prefix='clients', viewset=ClientViewSet)
+router.register(prefix='professionals', viewset=ProfessionalViewSet)
+router.register(prefix='reviews', viewset=ReviewViewSet)
+
+urlpatterns = router.urls
+
+urlpatterns += [
     url(r'^admin/', admin.site.urls),
 ]
