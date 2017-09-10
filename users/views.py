@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from rest_framework import viewsets
-from users.models import Client, Professional, Review
-from users.serializers import ClientSerializer, ProfessionalSerializer, ReviewSerializer
+from users.models import Client, Professional, Review, Announcement
+from users.serializers import ClientSerializer, ProfessionalSerializer, ReviewSerializer, AnnouncementSerializer
 
 
 class ClientViewSet(viewsets.ModelViewSet):
@@ -18,3 +18,7 @@ class ProfessionalViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+
+class AnnouncementViewSet(viewsets.ModelViewSet):
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementSerializer

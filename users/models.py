@@ -53,4 +53,4 @@ class Announcement(models.Model):
     movility = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.professional.name + ' advertises job as: ' + self.job + '. Between: ' + self.publish_date + ' and ' + self.expire_date
+        return self.professional.first_name + ' ' + self.professional.last_name + ' advertises job as: ' + self.job + '. Between: ' + self.publish_date.strftime(" %d %B, %Y") + ' and ' + self.expire_date.strftime(" %d %B, %Y")

@@ -16,12 +16,13 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
-from users.views import ClientViewSet, ProfessionalViewSet, ReviewViewSet
+from users.views import ClientViewSet, ProfessionalViewSet, ReviewViewSet, AnnouncementViewSet
 
 router = DefaultRouter()
 router.register(prefix='clients', viewset=ClientViewSet)
 router.register(prefix='professionals', viewset=ProfessionalViewSet)
 router.register(prefix='reviews', viewset=ReviewViewSet)
+router.register(prefix='announcements', viewset=AnnouncementViewSet)
 
 urlpatterns = router.urls
 
