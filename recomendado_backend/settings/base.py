@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_auth.registration',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.twitter',
 ]
 
 MIDDLEWARE = [
@@ -118,6 +121,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-# For django-rest-auth registration 
+# For django-rest-auth registration
 # http://django-rest-auth.readthedocs.io/en/latest/installation.html
 SITE_ID = 1
