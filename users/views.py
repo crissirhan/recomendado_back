@@ -5,6 +5,10 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from users.models import Client, Professional, Review, Announcement
 from users.serializers import ClientSerializer, ProfessionalSerializer, ReviewSerializer, AnnouncementSerializer
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
 
 
 class ClientViewSet(viewsets.ModelViewSet):

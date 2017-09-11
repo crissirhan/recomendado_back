@@ -40,6 +40,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'multiselectfield',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 ]
 
 MIDDLEWARE = [
@@ -110,3 +116,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# For django-rest-auth registration 
+# http://django-rest-auth.readthedocs.io/en/latest/installation.html
+SITE_ID = 1
