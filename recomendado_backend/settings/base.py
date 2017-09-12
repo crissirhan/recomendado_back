@@ -124,3 +124,9 @@ STATIC_URL = '/static/'
 # For django-rest-auth registration
 # http://django-rest-auth.readthedocs.io/en/latest/installation.html
 SITE_ID = 1
+
+# In order to server static files
+
+PROJECT_DIR = BASE_DIR#os.path.join(BASE_DIR, 'GeoYingo')
+PROJECT_ROOT = BASE_DIR
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
