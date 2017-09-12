@@ -6,7 +6,7 @@ ALLOWED_HOSTS = ['35.196.31.174']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'GeoYingoDB-Dev',
+        'NAME': 'Recomendado-DB-Dev',
         'HOST': '35.185.125.245',
         'PORT': '5432',
         'USER': 'postgres',
