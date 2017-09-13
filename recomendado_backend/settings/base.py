@@ -49,11 +49,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.twitter',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # CORS MIDDLEWARE goes here. It's need for for Cross-Origin Resource Sharing
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -130,3 +132,6 @@ SITE_ID = 1
 PROJECT_DIR = BASE_DIR#os.path.join(BASE_DIR, 'GeoYingo')
 PROJECT_ROOT = BASE_DIR
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# CORS settings 
+CORS_ORIGIN_ALLOW_ALL = True
