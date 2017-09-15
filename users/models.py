@@ -33,7 +33,8 @@ class Review(models.Model):
     date = models.DateTimeField(null=False)
 
     def __str__(self):
-        return 'Review from: ' + self.client.name + ' to: ' + self.professional.name + '. Date: ' + self.date.strftime(" %d %B, %Y")
+        #TODO: add proffesional and client names
+        return 'Review from: ' + ' to: ' + '. Date: ' + self.date.strftime(" %d %B, %Y")
 
 class Announcement(models.Model):
     WEEKDAYS = (('mon', 'Monday'),
