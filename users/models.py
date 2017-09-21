@@ -45,10 +45,18 @@ class Announcement(models.Model):
               ('sat', 'Saturday'),
               ('sun', 'Sunday'))
 
+    JOB_CATEGORIES = (('plumb', 'Plumbing'),
+              ('clean', 'Cleaning'),
+              ('elect', 'Electrical technician'),
+              ('lock', 'Locksmith'),
+              ('gard', 'Gardener'),
+              ('const', 'Construction'),
+              ('forn', 'Forniture'))
+
     professional = models.ForeignKey('Professional')
     publish_date = models.DateTimeField(null=False)
     expire_date = models.DateTimeField(null=False)
-    job = models.CharField(max_length=20)
+    job = models.CharField(max_length=5, choices=JOB_CATEGORIES)
     location = models.CharField(max_length=50)
     availability = MultiSelectField(choices=WEEKDAYS, max_choices=7)
     movility = models.CharField(max_length=50)
