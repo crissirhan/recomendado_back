@@ -12,6 +12,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
+from django.db.models import Count, Avg
 
 
 class ClientViewSet(viewsets.ModelViewSet):
@@ -43,3 +44,16 @@ class ProfessionalReviewList(generics.ListAPIView):
         professional = Professional.objects.filter(id=professional_id)
         reviews = Review.objects.filter(professional= professional)
         return reviews
+
+    def list(self, request, *args, **kwargs):
+        # Note the use of `get_queryset()` instead of `self.queryset`
+        queryset = self.get_queryset()
+        serializer = ReviewSerializer(queryset, many=True)
+        count = queryset.count()
+        average =  queryset.aggregate(Avg('rating')).values()[0]
+        data = {'reviews': serializer.data}
+        data.update({
+            'count':count,
+            'average':average
+        })
+        return Response(data)
