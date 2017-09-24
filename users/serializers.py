@@ -17,6 +17,23 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ("id","client", "professional", "rating", "comment", "date")
 
 class AnnouncementSerializer(serializers.ModelSerializer):
+    job = serializers.SerializerMethodField()
+    availability = serializers.SerializerMethodField()
     class Meta:
         model = Announcement
         fields = ("id","professional", "publish_date", "expire_date", "job", "location", "availability", "movility")
+
+    def get_job(self,obj):
+        return obj.get_job_display()
+
+    def get_availability(self,obj):
+        return obj.get_availability_display()
+
+class JobCategoriesSerializer(serializers.ModelSerializer):
+    categories = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Announcement
+
+    def get_categories(self,obj):
+        return obj.JOB_CATEGORIES
