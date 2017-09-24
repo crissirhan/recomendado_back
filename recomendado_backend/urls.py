@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
-from users.views import ClientViewSet, ProfessionalViewSet, ReviewViewSet, AnnouncementViewSet, ListJobCategories
+from users.views import ClientViewSet, ProfessionalViewSet, ReviewViewSet, AnnouncementViewSet, ListJobCategories, ProfessionalReviewList
 
 router = DefaultRouter()
 router.register(prefix='clients', viewset=ClientViewSet)
@@ -31,4 +31,5 @@ urlpatterns += [
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^job-categories/', ListJobCategories.as_view(), name='job-categories'),
+    url(r'^professional-reviews/(?P<professional>[-\w]+)/$', ProfessionalReviewList.as_view()),
 ]
