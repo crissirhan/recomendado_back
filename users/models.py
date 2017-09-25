@@ -48,10 +48,10 @@ class Announcement(models.Model):
     JOB_CATEGORIES = (('plumb', 'Plumbing'),
               ('clean', 'Cleaning'),
               ('elect', 'Electrical technician'),
-              ('lock', 'Locksmith'),
-              ('gard', 'Gardener'),
+              ('lock', 'Locksmithing'),
+              ('gard', 'Gardening'),
               ('const', 'Construction'),
-              ('forn', 'Forniture'))
+              ('forn', 'Forniture making'))
 
     professional = models.ForeignKey('Professional')
     publish_date = models.DateTimeField(null=False)
