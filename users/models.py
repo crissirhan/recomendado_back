@@ -6,16 +6,12 @@ from django.core.validators import MaxValueValidator, MinValueValidator, RegexVa
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 
-# Create your models here.
 
-class ExtendedUser(User):
-    class Meta:
-        abstract = True
+class Client(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="client")
 
-class Client(ExtendedUser):
-    pass
-
-class Professional(ExtendedUser):
+class Professional(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="professional")
     rut = models.CharField(max_length=12)
     region = models.CharField(max_length=50)
     city = models.CharField(max_length=30)

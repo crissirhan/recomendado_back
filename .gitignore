@@ -1,4 +1,3 @@
 *.pyc
-migrations/
 images/
 *.sqlite3

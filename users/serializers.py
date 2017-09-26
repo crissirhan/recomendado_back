@@ -1,15 +1,25 @@
 from rest_framework import serializers
 from users.models import Client, Professional, Review, Announcement
 
+
 class ClientSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
+    first_name = serializers.CharField(source='user.first_name')
+    last_name = serializers.CharField(source='user.last_name')
+    email = serializers.CharField(source='user.email')
     class Meta:
         model = Client
-        fields = ("id","first_name", "last_name", "email")
+        fields = ("id","username","first_name", "last_name", "email")
 
 class ProfessionalSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
+    first_name = serializers.CharField(source='user.first_name')
+    last_name = serializers.CharField(source='user.last_name')
+    email = serializers.CharField(source='user.email')
+
     class Meta:
         model = Professional
-        fields = ("id","first_name", "last_name", "email", "rut", "region", "city", "street", "house_number", "phone_number", "identification")
+        fields = ("id", "username", "first_name", "last_name", "email", "rut", "region", "city", "street", "house_number", "phone_number", "identification")
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
