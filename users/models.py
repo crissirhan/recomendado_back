@@ -50,6 +50,7 @@ class Announcement(models.Model):
     publish_date = models.DateTimeField(null=False)
     expire_date = models.DateTimeField(null=False)
     job = models.ForeignKey('JobCategory')
+    job_subtype = models.ForeignKey('JobSubCategory', blank=True, null=True)
     location = models.CharField(max_length=50)
     availability = MultiSelectField(choices=WEEKDAYS, max_choices=7)
     movility = models.CharField(max_length=50)
