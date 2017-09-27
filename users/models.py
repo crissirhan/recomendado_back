@@ -10,6 +10,9 @@ from multiselectfield import MultiSelectField
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="client")
 
+    def __unicode__(self):
+        return u'{f}'.format(f=self.user.first_name) + ' ' + u'{f}'.format(f=self.user.last_name)
+
 class Professional(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="professional")
     rut = models.CharField(max_length=12)
@@ -21,6 +24,9 @@ class Professional(models.Model):
     phone_number = models.CharField(max_length = 15, validators=[phone_regex], blank=True)
     identification = models.ImageField(upload_to='images/', blank=True, null=True)
 
+    def __unicode__(self):
+        return u'{f}'.format(f=self.user.first_name) + ' ' + u'{f}'.format(f=self.user.last_name)
+
 class Review(models.Model):
     client = models.ForeignKey('Client')
     professional = models.ForeignKey('Professional')
@@ -28,9 +34,8 @@ class Review(models.Model):
     comment = models.CharField(max_length=10000, null=True)
     date = models.DateTimeField(null=False)
 
-    def __str__(self):
-        #TODO: add proffesional and client names
-        return 'Review de: ' + ' para: ' + '. Fecha: ' + self.date.strftime(" %d %B, %Y")
+    def __unicode__(self):
+        return 'Review de: ' + u'{f}'.format(f=self.client.user.first_name) + ' para: ' + u'{f}'.format(f=self.professional.user.first_name) + '. Fecha: ' + self.date.strftime(" %d %B, %Y")
 
 class Announcement(models.Model):
     WEEKDAYS = (('lun', 'Lunes'),
@@ -55,12 +60,12 @@ class Announcement(models.Model):
 class JobCategory(models.Model):
     job_type = models.CharField(max_length=50)
 
-    def __str__(self):
-        return self.job_type
+    def __unicode__(self):
+        return u'{f}'.format(f=self.job_type)
 
 class JobSubCategory(models.Model):
     job_sub_type = models.CharField(max_length=50)
     job_category = models.ForeignKey('JobCategory',related_name='sub_type')
 
-    def __str__(self):
-        return self.job_sub_type
+    def __unicode__(self):
+        return u'{f}'.format(f=self.job_sub_type)
