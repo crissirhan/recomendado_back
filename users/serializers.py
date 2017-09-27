@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from users.models import Client, Professional, Review, Announcement
+from users.models import Client, Professional, Review, Announcement, JobCategory, JobSubCategory
 
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -25,25 +25,27 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ("id","client", "professional", "rating", "comment", "date")
+        depth = 1
 
 class AnnouncementSerializer(serializers.ModelSerializer):
-    job = serializers.SerializerMethodField()
     availability = serializers.SerializerMethodField()
     class Meta:
         model = Announcement
         fields = ("id","professional", "publish_date", "expire_date", "job", "location", "availability", "movility")
-
-    def get_job(self,obj):
-        return obj.get_job_display()
+        depth = 1
 
     def get_availability(self,obj):
         return obj.get_availability_display()
 
-class JobCategoriesSerializer(serializers.ModelSerializer):
-    categories = serializers.SerializerMethodField()
-
+class JobSubCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Announcement
+        model = JobSubCategory
+        fields = ("id","job_sub_type",)
+        depth = 0
 
-    def get_categories(self,obj):
-        return obj.JOB_CATEGORIES
+class JobCategoriesSerializer(serializers.ModelSerializer):
+    sub_type = JobSubCategoriesSerializer(many=True)
+    class Meta:
+        model = JobCategory
+        fields = ("id","job_type","sub_type")
+        depth = 1

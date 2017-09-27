@@ -30,32 +30,37 @@ class Review(models.Model):
 
     def __str__(self):
         #TODO: add proffesional and client names
-        return 'Review from: ' + ' to: ' + '. Date: ' + self.date.strftime(" %d %B, %Y")
+        return 'Review de: ' + ' para: ' + '. Fecha: ' + self.date.strftime(" %d %B, %Y")
 
 class Announcement(models.Model):
-    WEEKDAYS = (('mon', 'Monday'),
-              ('tue', 'Tuesday'),
-              ('wed', 'Wednesday'),
-              ('thurs', 'Thursday'),
-              ('frid', 'Friday'),
-              ('sat', 'Saturday'),
-              ('sun', 'Sunday'))
-
-    JOB_CATEGORIES = (('plumb', 'Plumbing'),
-              ('clean', 'Cleaning'),
-              ('elect', 'Electrical technician'),
-              ('lock', 'Locksmithing'),
-              ('gard', 'Gardening'),
-              ('const', 'Construction'),
-              ('forn', 'Forniture making'))
+    WEEKDAYS = (('lun', 'Lunes'),
+              ('mar', 'Martes'),
+              ('mier', 'Miércoles'),
+              ('jue', 'Jueves'),
+              ('vier', 'Viernes'),
+              ('sab', 'Sábado'),
+              ('dom', 'Domingo'))
 
     professional = models.ForeignKey('Professional')
     publish_date = models.DateTimeField(null=False)
     expire_date = models.DateTimeField(null=False)
-    job = models.CharField(max_length=5, choices=JOB_CATEGORIES)
+    job = models.ForeignKey('JobCategory')
     location = models.CharField(max_length=50)
     availability = MultiSelectField(choices=WEEKDAYS, max_choices=7)
     movility = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.professional.first_name + ' ' + self.professional.last_name + ' advertises job as: ' + self.job + '. Between: ' + self.publish_date.strftime(" %d %B, %Y") + ' and ' + self.expire_date.strftime(" %d %B, %Y")
+        return self.professional.user.first_name + ' ' + self.professional.user.last_name + ' publicita trabajo como: ' + self.job.job_type + '. Entre: ' + self.publish_date.strftime(" %d %B, %Y") + ' y ' + self.expire_date.strftime(" %d %B, %Y")
+
+class JobCategory(models.Model):
+    job_type = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.job_type
+
+class JobSubCategory(models.Model):
+    job_sub_type = models.CharField(max_length=50)
+    job_category = models.ForeignKey('JobCategory',related_name='sub_type')
+
+    def __str__(self):
+        return self.job_sub_type

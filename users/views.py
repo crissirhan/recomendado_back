@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from rest_framework import viewsets
-from users.models import Client, Professional, Review, Announcement
-from users.serializers import ClientSerializer, ProfessionalSerializer, ReviewSerializer, AnnouncementSerializer, JobCategoriesSerializer
+from users.models import *
+from users.serializers import *
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
@@ -31,10 +31,6 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     queryset = Announcement.objects.all()
     serializer_class = AnnouncementSerializer
 
-class ListJobCategories(APIView):
-    def get(self, request):
-        return Response(Announcement.JOB_CATEGORIES)
-
 class ProfessionalReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
     lookup_url_kwarg = "professional"
@@ -57,3 +53,11 @@ class ProfessionalReviewList(generics.ListAPIView):
             'average':average
         })
         return Response(data)
+
+class JobCategoryViewSet(viewsets.ModelViewSet):
+    queryset = JobCategory.objects.all()
+    serializer_class = JobCategoriesSerializer
+
+class JobSubCategoryViewSet(viewsets.ModelViewSet):
+    queryset = JobSubCategory.objects.all()
+    serializer_class = JobSubCategoriesSerializer
