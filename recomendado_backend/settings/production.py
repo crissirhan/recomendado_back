@@ -1,7 +1,7 @@
 from recomendado_backend.settings.base import *
 
 DEBUG = False
-ALLOWED_HOSTS = ['35.196.31.174']
+ALLOWED_HOSTS = ['35.196.31.174', u'api.recomendado-dev.samir.cl' ]
 
 DATABASES = {
     'default': {
