@@ -135,22 +135,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # CORS settings
 CORS_ORIGIN_ALLOW_ALL = True
-
-
-# Email Login
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-
-AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
-    "django.contrib.auth.backends.ModelBackend",
-
-    # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
-
-#
-REST_AUTH_SERIALIZERS = {
-    #'USER_DETAILS_SERIALIZER': 'users.LoginSerializer',
-}
