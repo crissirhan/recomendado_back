@@ -54,6 +54,16 @@ class ProfessionalReviewList(generics.ListAPIView):
         })
         return Response(data)
 
+class ProfessionalAnnouncementList(generics.ListAPIView):
+    serializer_class = AnnouncementSerializer
+    lookup_url_kwarg = "professional"
+
+    def get_queryset(self):
+        professional_id = self.kwargs.get(self.lookup_url_kwarg)
+        professional = Professional.objects.filter(id=professional_id)
+        announcement = Announcement.objects.filter(professional= professional)
+        return announcement
+
 class JobCategoryViewSet(viewsets.ModelViewSet):
     queryset = JobCategory.objects.all()
     serializer_class = JobCategoriesSerializer
