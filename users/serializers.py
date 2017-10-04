@@ -25,7 +25,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ("id","service", "rating", "client_comment", "professional_response", "date")
-        depth = 1
+        depth = 2
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     availability = serializers.SerializerMethodField()
