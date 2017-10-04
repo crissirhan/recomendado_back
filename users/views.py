@@ -38,7 +38,7 @@ class ProfessionalReviewList(generics.ListAPIView):
     def get_queryset(self):
         professional_id = self.kwargs.get(self.lookup_url_kwarg)
         professional = Professional.objects.filter(id=professional_id)
-        reviews = Review.objects.filter(professional= professional)
+        reviews = Review.objects.filter(service__announcement__professional__id= professional_id)
         return reviews
 
     def list(self, request, *args, **kwargs):
@@ -60,8 +60,7 @@ class ProfessionalAnnouncementList(generics.ListAPIView):
 
     def get_queryset(self):
         professional_id = self.kwargs.get(self.lookup_url_kwarg)
-        professional = Professional.objects.filter(id=professional_id)
-        announcement = Announcement.objects.filter(professional= professional)
+        announcement = Announcement.objects.filter(professional__id = professional_id)
         return announcement
 
 class JobCategoryViewSet(viewsets.ModelViewSet):
@@ -71,3 +70,7 @@ class JobCategoryViewSet(viewsets.ModelViewSet):
 class JobSubCategoryViewSet(viewsets.ModelViewSet):
     queryset = JobSubCategory.objects.all()
     serializer_class = JobSubCategoriesSerializer
+
+class ServiceViewSet(viewsets.ModelViewSet):
+    queryset = Service.objects.all()
+    serializer_class = ServicesSerializer

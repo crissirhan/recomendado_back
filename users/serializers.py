@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from users.models import Client, Professional, Review, Announcement, JobCategory, JobSubCategory
+from users.models import *
 
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -24,7 +24,7 @@ class ProfessionalSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ("id","client", "professional", "rating", "comment", "date")
+        fields = ("id","service", "rating", "client_comment", "professional_response", "date")
         depth = 1
 
 class AnnouncementSerializer(serializers.ModelSerializer):
@@ -48,4 +48,10 @@ class JobCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobCategory
         fields = ("id","job_type","sub_type")
+        depth = 1
+
+class ServicesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Service
+        fields = ("id","announcement","client")
         depth = 1

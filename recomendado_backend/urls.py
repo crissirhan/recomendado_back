@@ -25,7 +25,7 @@ router.register(prefix='reviews', viewset=ReviewViewSet)
 router.register(prefix='announcements', viewset=AnnouncementViewSet)
 router.register(prefix='job-categories', viewset=JobCategoryViewSet)
 router.register(prefix='job-sub-categories', viewset=JobSubCategoryViewSet)
-
+router.register(prefix='services', viewset=ServiceViewSet)
 urlpatterns = router.urls
 
 urlpatterns += [

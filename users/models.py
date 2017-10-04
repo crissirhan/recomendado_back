@@ -11,7 +11,7 @@ class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="client")
 
     def __unicode__(self):
-        return u'{f}'.format(f=self.user.first_name) + ' ' + u'{f}'.format(f=self.user.last_name)
+        return u'{f}'.format(f=self.user.username)
 
 class Professional(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="professional")
@@ -25,17 +25,19 @@ class Professional(models.Model):
     identification = models.ImageField(upload_to='images/', blank=True, null=True)
 
     def __unicode__(self):
-        return u'{f}'.format(f=self.user.first_name) + ' ' + u'{f}'.format(f=self.user.last_name)
+        return u'{f}'.format(f=self.user.username)
 
 class Review(models.Model):
-    client = models.ForeignKey('Client')
-    professional = models.ForeignKey('Professional')
+    #client = models.ForeignKey('Client')
+    #professional = models.ForeignKey('Professional')
+    service = models.ForeignKey('Service')
     rating = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
-    comment = models.CharField(max_length=10000, null=True)
+    client_comment = models.CharField(max_length=10000, blank=True, null=True)
+    professional_response = models.CharField(max_length=10000, blank=True, null=True)
     date = models.DateTimeField(null=False)
 
     def __unicode__(self):
-        return 'Review de: ' + u'{f}'.format(f=self.client.user.first_name) + ' para: ' + u'{f}'.format(f=self.professional.user.first_name) + '. Fecha: ' + self.date.strftime(" %d %B, %Y")
+        return 'Review de: ' + u'{f}'.format(f=self.service.client.user.username) + ' para: ' + u'{f}'.format(f=self.service.announcement.professional.user.username) + '. Fecha: ' + self.date.strftime(" %d %B, %Y")
 
 class Announcement(models.Model):
     WEEKDAYS = (('lun', 'Lunes'),
@@ -56,7 +58,7 @@ class Announcement(models.Model):
     movility = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.professional.user.first_name + ' ' + self.professional.user.last_name + ' publicita trabajo como: ' + self.job.job_type + '. Entre: ' + self.publish_date.strftime(" %d %B, %Y") + ' y ' + self.expire_date.strftime(" %d %B, %Y")
+        return self.professional.user.username + ' publicita trabajo como: ' + self.job.job_type + '. Entre: ' + self.publish_date.strftime(" %d %B, %Y") + ' y ' + self.expire_date.strftime(" %d %B, %Y")
 
 class JobCategory(models.Model):
     job_type = models.CharField(max_length=50)
@@ -70,3 +72,10 @@ class JobSubCategory(models.Model):
 
     def __unicode__(self):
         return u'{f}'.format(f=self.job_sub_type)
+
+class Service(models.Model):
+    announcement = models.ForeignKey('Announcement',related_name='announcement')
+    client = models.ForeignKey('Client',related_name='client')
+
+    def __unicode__(self):
+        return u'{f}'.format(f=self.announcement.professional.user.username + 'presta servicio a: ' +self.client.user.username )
