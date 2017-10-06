@@ -34,4 +34,5 @@ urlpatterns += [
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^professional-reviews/(?P<professional>[-\w]+)/$', ProfessionalReviewList.as_view()),
     url(r'^professional-announcements/(?P<professional>[-\w]+)/$', ProfessionalAnnouncementList.as_view()),
+    url(r'^announcements/job/(?P<id>[-\w]+)/$', AnnouncementByJobCategoryViewSet.as_view()),
 ]
