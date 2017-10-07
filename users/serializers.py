@@ -10,6 +10,17 @@ class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = ("id","username","first_name", "last_name", "email")
+        depth = 2
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user', None)
+        for attr, value in user_data.items():
+            setattr(instance.user, attr, value)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.user.save()
+        instance.save()
+        return instance
 
 class ProfessionalSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
@@ -21,6 +32,7 @@ class ProfessionalSerializer(serializers.ModelSerializer):
         model = Professional
         fields = ("id", "username","first_name", "last_name", "email", "rut", "region", "city", "street", "house_number", "phone_number", "identification")
         depth = 2
+        
     def update(self, instance, validated_data):
         user_data = validated_data.pop('user', None)
         for attr, value in user_data.items():
