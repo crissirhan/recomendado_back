@@ -19,8 +19,18 @@ class ProfessionalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Professional
-        fields = ("id", "username", "first_name", "last_name", "email", "rut", "region", "city", "street", "house_number", "phone_number", "identification")
-
+        fields = ("id", "username","first_name", "last_name", "email", "rut", "region", "city", "street", "house_number", "phone_number", "identification")
+        depth = 2
+    def update(self, instance, validated_data):
+        # First, update the User
+        user_data = validated_data.pop('user', None)
+        for attr, value in user_data.items():
+                setattr(instance.user, attr, value)
+        # Then, update UserProfile
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review

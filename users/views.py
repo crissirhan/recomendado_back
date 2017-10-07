@@ -23,6 +23,13 @@ class ProfessionalViewSet(viewsets.ModelViewSet):
     queryset = Professional.objects.all()
     serializer_class = ProfessionalSerializer
 
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.queryset.get(pk=kwargs.get('pk'))
+        serializer = self.serializer_class(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
