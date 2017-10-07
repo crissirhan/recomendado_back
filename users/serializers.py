@@ -22,11 +22,9 @@ class ProfessionalSerializer(serializers.ModelSerializer):
         fields = ("id", "username","first_name", "last_name", "email", "rut", "region", "city", "street", "house_number", "phone_number", "identification")
         depth = 2
     def update(self, instance, validated_data):
-        # First, update the User
         user_data = validated_data.pop('user', None)
         for attr, value in user_data.items():
-                setattr(instance.user, attr, value)
-        # Then, update UserProfile
+            setattr(instance.user, attr, value)
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
@@ -42,7 +40,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Announcement
         fields = ("id","professional", "publish_date", "expire_date", "job", "location", "availability", "movility")
-        depth = 1
+        depth = 2
 
     def get_availability(self,obj):
         return obj.get_availability_display()
