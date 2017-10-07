@@ -27,6 +27,7 @@ class ProfessionalSerializer(serializers.ModelSerializer):
             setattr(instance.user, attr, value)
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
+        instance.user.save()
         instance.save()
         return instance
 class ReviewSerializer(serializers.ModelSerializer):
