@@ -32,7 +32,7 @@ class ProfessionalSerializer(serializers.ModelSerializer):
         model = Professional
         fields = ("id", "username","first_name", "last_name", "email", "rut", "region", "city", "street", "house_number", "phone_number", "identification")
         depth = 2
-        
+
     def update(self, instance, validated_data):
         user_data = validated_data.pop('user', None)
         for attr, value in user_data.items():
@@ -57,6 +57,12 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 
     def get_availability(self,obj):
         return obj.get_availability_display()
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 
 class JobSubCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
