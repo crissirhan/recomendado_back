@@ -57,6 +57,9 @@ class Announcement(models.Model):
     availability = MultiSelectField(choices=WEEKDAYS, max_choices=7)
     movility = models.CharField(max_length=50)
 
+    def get_weekdays(self):
+        return self.WEEKDAYS
+
     def __str__(self):
         return self.professional.user.username + ' publicita trabajo como: ' + self.job.job_type + '. Entre: ' + self.publish_date.strftime(" %d %B, %Y") + ' y ' + self.expire_date.strftime(" %d %B, %Y")
 

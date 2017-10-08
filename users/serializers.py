@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, fields
 from users.models import *
 
 
@@ -49,14 +49,19 @@ class ReviewSerializer(serializers.ModelSerializer):
         depth = 2
 
 class AnnouncementSerializer(serializers.ModelSerializer):
-    availability = serializers.SerializerMethodField()
+    availability_display = serializers.SerializerMethodField()
+    availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
+    #weekdays = serializers.SerializerMethodField()
     class Meta:
         model = Announcement
-        fields = ("id","professional", "publish_date", "expire_date", "job", "location", "availability", "movility")
+        fields = ("id","professional", "publish_date", "expire_date", "job", "location", "availability","availability_display","movility")
         depth = 2
 
-    def get_availability(self,obj):
+    def get_availability_display(self,obj):
         return obj.get_availability_display()
+
+    def get_weekdays(self,obj):
+        return obj.get_weekdays()
 
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
