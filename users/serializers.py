@@ -2,14 +2,18 @@ from rest_framework import serializers, fields
 from users.models import *
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        write_only_fields = ['password']
+        read_only_fields = ['id']
+        fields = ("id","username","password","first_name", "last_name", "email")
+
 class ClientSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username')
-    first_name = serializers.CharField(source='user.first_name')
-    last_name = serializers.CharField(source='user.last_name')
-    email = serializers.CharField(source='user.email')
+    user = UserSerializer(many=False)
     class Meta:
         model = Client
-        fields = ("id","username","first_name", "last_name", "email")
+        fields = ("id", "user")
         depth = 2
 
     def update(self, instance, validated_data):
@@ -22,15 +26,20 @@ class ClientSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = User.objects.create(**user_data)
+        client = Client.objects.create(user=user, **validated_data)
+        print(client)
+        print(user)
+        return client
+
 class ProfessionalSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username')
-    first_name = serializers.CharField(source='user.first_name')
-    last_name = serializers.CharField(source='user.last_name')
-    email = serializers.CharField(source='user.email')
+    user = UserSerializer(many=False)
 
     class Meta:
         model = Professional
-        fields = ("id", "username","first_name", "last_name", "email", "rut", "region", "city", "street", "house_number", "phone_number", "identification")
+        fields = ("id", "user", "rut", "region", "city", "street", "house_number", "phone_number", "identification")
         depth = 2
 
     def update(self, instance, validated_data):
@@ -42,11 +51,18 @@ class ProfessionalSerializer(serializers.ModelSerializer):
         instance.user.save()
         instance.save()
         return instance
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = User.objects.create(**user_data)
+        professional = Professional.objects.create(user=user, **validated_data)
+        return professional
+
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ("id","service", "rating", "client_comment", "professional_response", "date")
-        depth = 2
+        depth = 3
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     availability_display = serializers.SerializerMethodField()
@@ -73,17 +89,17 @@ class JobSubCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobSubCategory
         fields = ("id","job_sub_type",)
-        depth = 0
+        depth = 2
 
 class JobCategoriesSerializer(serializers.ModelSerializer):
     sub_type = JobSubCategoriesSerializer(many=True)
     class Meta:
         model = JobCategory
         fields = ("id","job_type","sub_type")
-        depth = 1
+        depth = 2
 
 class ServicesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = ("id","announcement","client")
-        depth = 1
+        depth = 2
