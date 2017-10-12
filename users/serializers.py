@@ -28,7 +28,10 @@ class ClientSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
+        password = user_data.pop('password')
         user = User.objects.create(**user_data)
+        user.set_password(password)
+        user.save()
         client = Client.objects.create(user=user, **validated_data)
         print(client)
         print(user)
@@ -54,15 +57,13 @@ class ProfessionalSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
+        password = user_data.pop('password')
         user = User.objects.create(**user_data)
+        user.set_password(password)
+        user.save()
         professional = Professional.objects.create(user=user, **validated_data)
         return professional
 
-class ReviewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Review
-        fields = ("id","service", "rating", "client_comment", "professional_response", "date")
-        depth = 5
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     availability_display = serializers.SerializerMethodField()
@@ -106,11 +107,21 @@ class ServicesSerializer(serializers.ModelSerializer):
         fields = ("id","announcement","client")
         depth = 2
     def create(self, validated_data):
-        print(validated_data)
         client_data = validated_data.pop('client')
-        print(client_data)
         client = Client.objects.filter(id=client_data.id)
         announcement_data = validated_data.pop('announcement')
         announcement = Announcement.objects.filter(id=announcement_data.id)
         service = Service.objects.create(client=client, announcement=announcement, **validated_data)
         return service
+
+class ReviewSerializer(serializers.ModelSerializer):
+    service = ServicesSerializer(many=False)
+    class Meta:
+        model = Review
+        fields = ("id","service", "rating", "client_comment", "professional_response", "date")
+        depth = 5
+    def create(self, validated_data):
+        service_data = validated_data.pop('service')
+        service = Service.objects.filter(id=service_data.id)
+        review = Review.objects.create(service=service, **validated_data)
+        return review
