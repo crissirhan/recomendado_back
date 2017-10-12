@@ -99,7 +99,18 @@ class JobCategoriesSerializer(serializers.ModelSerializer):
         depth = 2
 
 class ServicesSerializer(serializers.ModelSerializer):
+    client = ClientSerializer(many=False)
+    announcement = AnnouncementSerializer(many=False)
     class Meta:
         model = Service
         fields = ("id","announcement","client")
         depth = 2
+    def create(self, validated_data):
+        print(validated_data)
+        client_data = validated_data.pop('client')
+        print(client_data)
+        client = Client.objects.filter(id=client_data.id)
+        announcement_data = validated_data.pop('announcement')
+        announcement = Announcement.objects.filter(id=announcement_data.id)
+        service = Service.objects.create(client=client, announcement=announcement, **validated_data)
+        return service
