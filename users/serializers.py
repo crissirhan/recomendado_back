@@ -105,12 +105,20 @@ class ServicesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = ("id","announcement","client")
-        depth = 2
+        
+class PostServicesSerializer(serializers.ModelSerializer):
+    client_id= serializers.PrimaryKeyRelatedField(source='client',read_only=False, queryset=Client.objects.all())
+    announcement_id = serializers.PrimaryKeyRelatedField(source='announcement',read_only=False, queryset=Announcement.objects.all())
+    class Meta:
+        model = Service
+        fields = ("id","announcement_id","client_id")
     def create(self, validated_data):
+        print(validated_data)
         client_data = validated_data.pop('client')
-        client = Client.objects.filter(id=client_data.id)
+        client = Client.objects.get(id=client_data.id)
+        print(client_data.id)
         announcement_data = validated_data.pop('announcement')
-        announcement = Announcement.objects.filter(id=announcement_data.id)
+        announcement = Announcement.objects.get(id=announcement_data.id)
         service = Service.objects.create(client=client, announcement=announcement, **validated_data)
         return service
 

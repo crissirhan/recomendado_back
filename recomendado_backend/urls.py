@@ -26,6 +26,7 @@ router.register(prefix='announcements', viewset=AnnouncementViewSet)
 router.register(prefix='job-categories', viewset=JobCategoryViewSet)
 router.register(prefix='job-sub-categories', viewset=JobSubCategoryViewSet)
 router.register(prefix='services', viewset=ServiceViewSet)
+router.register(base_name="post",prefix='post-services', viewset=PostServiceViewSet)
 urlpatterns = router.urls
 
 urlpatterns += [
