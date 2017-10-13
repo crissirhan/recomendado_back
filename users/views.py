@@ -84,6 +84,15 @@ class ProfessionalAnnouncementList(generics.ListAPIView):
         announcement = Announcement.objects.filter(professional__id = professional_id)
         return announcement
 
+class ClientServiceList(generics.ListAPIView):
+    serializer_class = ServicesSerializer
+    lookup_url_kwarg = "client"
+
+    def get_queryset(self):
+        client_id = self.kwargs.get(self.lookup_url_kwarg)
+        service = Service.objects.filter(client__id = client_id)
+        return service
+
 class ProfessionalByUsernameList(generics.ListAPIView):
     serializer_class = ProfessionalSerializer
     lookup_url_kwarg = "username"

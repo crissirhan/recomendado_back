@@ -35,6 +35,7 @@ urlpatterns += [
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^professional-reviews/(?P<professional>[-\w]+)/$', ProfessionalReviewList.as_view()),
     url(r'^professional-announcements/(?P<professional>[-\w]+)/$', ProfessionalAnnouncementList.as_view()),
+    url(r'^client-services/(?P<client>[-\w]+)/$', ClientServiceList.as_view()),
     url(r'^announcements/job/(?P<id>[-\w]+)/$', AnnouncementByJobCategoryViewSet.as_view()),
     url(r'^professionals-username/(?P<username>\w+|[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/$', ProfessionalByUsernameList.as_view()),
     url(r'^clients-username/(?P<username>.+)/$', ClientByUsernameList.as_view()),
