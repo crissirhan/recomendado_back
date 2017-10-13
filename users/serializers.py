@@ -133,6 +133,28 @@ class PostReviewsSerializer(serializers.ModelSerializer):
         review = Review.objects.create(service=service, **validated_data)
         return review
 
+class PostAnnoucementSerializer(serializers.ModelSerializer):
+    professional_id= serializers.PrimaryKeyRelatedField(source='professional',read_only=False, queryset=Professional.objects.all())
+    job_id = serializers.PrimaryKeyRelatedField(source='job',read_only=False, queryset=JobCategory.objects.all())
+    job_subtype_id= serializers.PrimaryKeyRelatedField(source='job_subtype',read_only=False,required=False, queryset=JobSubCategory.objects.all())
+    class Meta:
+        model = Announcement
+        fields = ("id","professional_id","job_id","job_subtype_id", "publish_date", "expire_date", "location", "availability", "movility")
+    def create(self, validated_data):
+        print(validated_data)
+        professional_data = validated_data.pop('professional')
+        professional = Professional.objects.get(id=professional_data.id)
+        job_data = validated_data.pop('job')
+        job = JobCategory.objects.get(id=job_data.id)
+        if 'job_subtype' in validated_data:
+            job_subtype_data = validated_data.pop('job_subtype')
+            if job_subtype_data.id:
+                job_subtype = JobSubCategory.objects.get(id=job_subtype_data.id)
+                announcement = Announcement.objects.create(professional=professional, job=job, job_subtype=job_subtype, **validated_data)
+                return announcement
+        announcement = Announcement.objects.create(professional=professional, job=job, **validated_data)
+        return announcement
+
 class ReviewSerializer(serializers.ModelSerializer):
     service = ServicesSerializer(many=False)
     class Meta:

@@ -139,3 +139,7 @@ class PostServiceViewSet(viewsets.ModelViewSet):
 class PostReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = PostReviewsSerializer
+
+class PostAnnouncementViewSet(viewsets.ModelViewSet):
+    queryset = Announcement.objects.all()
+    serializer_class = PostAnnoucementSerializer
