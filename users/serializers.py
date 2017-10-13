@@ -105,7 +105,7 @@ class ServicesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
         fields = ("id","announcement","client")
-        
+
 class PostServicesSerializer(serializers.ModelSerializer):
     client_id= serializers.PrimaryKeyRelatedField(source='client',read_only=False, queryset=Client.objects.all())
     announcement_id = serializers.PrimaryKeyRelatedField(source='announcement',read_only=False, queryset=Announcement.objects.all())
@@ -121,6 +121,17 @@ class PostServicesSerializer(serializers.ModelSerializer):
         announcement = Announcement.objects.get(id=announcement_data.id)
         service = Service.objects.create(client=client, announcement=announcement, **validated_data)
         return service
+class PostReviewsSerializer(serializers.ModelSerializer):
+    service_id= serializers.PrimaryKeyRelatedField(source='service',read_only=False, queryset=Service.objects.all())
+    class Meta:
+        model = Review
+        fields = ("id","service_id","date","client_comment","rating")
+    def create(self, validated_data):
+        print(validated_data)
+        service_data = validated_data.pop('service')
+        service = Service.objects.get(id=service_data.id)
+        review = Review.objects.create(service=service, **validated_data)
+        return review
 
 class ReviewSerializer(serializers.ModelSerializer):
     service = ServicesSerializer(many=False)
