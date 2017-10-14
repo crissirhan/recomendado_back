@@ -137,6 +137,7 @@ class PostAnnoucementSerializer(serializers.ModelSerializer):
     professional_id= serializers.PrimaryKeyRelatedField(source='professional',read_only=False, queryset=Professional.objects.all())
     job_id = serializers.PrimaryKeyRelatedField(source='job',read_only=False, queryset=JobCategory.objects.all())
     job_subtype_id= serializers.PrimaryKeyRelatedField(source='job_subtype',read_only=False,required=False, queryset=JobSubCategory.objects.all())
+    availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
     class Meta:
         model = Announcement
         fields = ("id","professional_id","job_id","job_subtype_id", "publish_date", "expire_date", "location", "availability", "movility")
