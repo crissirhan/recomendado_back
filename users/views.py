@@ -13,6 +13,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 from django.db.models import Count, Avg
+from rest_framework import filters
 
 
 class ClientViewSet(viewsets.ModelViewSet):
@@ -44,6 +45,8 @@ class ReviewViewSet(viewsets.ModelViewSet):
 class AnnouncementViewSet(viewsets.ModelViewSet):
     queryset = Announcement.objects.all()
     serializer_class = AnnouncementSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ( 'job__job_type', 'job_subtype__job_sub_type', 'location', 'professional__user__email', 'professional__user__first_name', 'professional__user__last_name',)
 
     def partial_update(self, request, *args, **kwargs):
         instance = self.queryset.get(pk=kwargs.get('pk'))
@@ -114,6 +117,8 @@ class ClientByUsernameList(generics.ListAPIView):
 class AnnouncementByJobCategoryViewSet(generics.ListAPIView):
     serializer_class = AnnouncementSerializer
     lookup_url_kwarg = "id"
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ( 'job__job_type', 'job_subtype__job_sub_type', 'location', 'professional__user__email', 'professional__user__first_name', 'professional__user__last_name',)
 
     def get_queryset(self):
         category_id = self.kwargs.get(self.lookup_url_kwarg)
