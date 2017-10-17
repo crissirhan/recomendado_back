@@ -56,6 +56,8 @@ class Announcement(models.Model):
     location = models.CharField(max_length=50)
     availability = MultiSelectField(choices=WEEKDAYS, max_choices=7)
     movility = models.CharField(max_length=50)
+    title = models.CharField(max_length=50)
+    description = models.CharField(max_length=500)
 
     def get_weekdays(self):
         return self.WEEKDAYS
