@@ -71,7 +71,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     #weekdays = serializers.SerializerMethodField()
     class Meta:
         model = Announcement
-        fields = ("id","professional", "publish_date", "expire_date", "job", "location", "availability","availability_display","movility")
+        fields = ("id","professional", "publish_date", "expire_date", "job", "job_subtype", "location", "availability","availability_display","movility")
         depth = 2
 
     def get_availability_display(self,obj):
