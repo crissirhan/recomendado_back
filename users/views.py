@@ -46,7 +46,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     queryset = Announcement.objects.all()
     serializer_class = AnnouncementSerializer
     filter_backends = (filters.SearchFilter,)
-    search_fields = ( 'job__job_type', 'job_subtype__job_sub_type', 'location', 'professional__user__email', 'professional__user__first_name', 'professional__user__last_name',)
+    search_fields = ( 'title', 'description', 'job__job_type', 'job_subtype__job_sub_type', 'location', 'professional__user__email', 'professional__user__first_name', 'professional__user__last_name',)
 
     def partial_update(self, request, *args, **kwargs):
         instance = self.queryset.get(pk=kwargs.get('pk'))
@@ -118,7 +118,7 @@ class AnnouncementByJobCategoryViewSet(generics.ListAPIView):
     serializer_class = AnnouncementSerializer
     lookup_url_kwarg = "id"
     filter_backends = (filters.SearchFilter,)
-    search_fields = ( 'job__job_type', 'job_subtype__job_sub_type', 'location', 'professional__user__email', 'professional__user__first_name', 'professional__user__last_name',)
+    search_fields = ( 'title', 'description', 'job__job_type', 'job_subtype__job_sub_type', 'location', 'professional__user__email', 'professional__user__first_name', 'professional__user__last_name',)
 
     def get_queryset(self):
         category_id = self.kwargs.get(self.lookup_url_kwarg)

@@ -71,7 +71,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     #weekdays = serializers.SerializerMethodField()
     class Meta:
         model = Announcement
-        fields = ("id","professional", "publish_date", "expire_date", "job", "job_subtype", "location", "availability","availability_display","movility")
+        fields = ("id", "title", "description",  "professional", "publish_date", "expire_date", "job", "job_subtype", "location", "availability","availability_display","movility")
         depth = 2
 
     def get_availability_display(self,obj):
@@ -140,7 +140,7 @@ class PostAnnoucementSerializer(serializers.ModelSerializer):
     availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
     class Meta:
         model = Announcement
-        fields = ("id","professional_id","job_id","job_subtype_id", "publish_date", "expire_date", "location", "availability", "movility")
+        fields = ("id","title", "description", "professional_id","job_id","job_subtype_id", "publish_date", "expire_date", "location", "availability", "movility")
     def create(self, validated_data):
         print(validated_data)
         professional_data = validated_data.pop('professional')
