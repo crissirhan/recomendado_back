@@ -5,6 +5,7 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
+from djmoney.models.fields import MoneyField
 
 
 class Client(models.Model):
@@ -23,7 +24,7 @@ class Professional(models.Model):
     phone_regex = RegexValidator(regex=r'^\+?1?\d{8,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone_number = models.CharField(max_length = 15, validators=[phone_regex], blank=True)
     identification = models.ImageField(upload_to='images/', blank=True, null=True)
-
+    #TODO: add more identification and certificatiin related fields
     def __unicode__(self):
         return u'{f}'.format(f=self.user.username)
 
@@ -58,6 +59,7 @@ class Announcement(models.Model):
     movility = models.CharField(max_length=50)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
+    price = MoneyField(max_digits=10, decimal_places=0, default_currency='CLP', null=False)
 
     def get_weekdays(self):
         return self.WEEKDAYS
@@ -73,6 +75,7 @@ class JobCategory(models.Model):
 class JobSubCategory(models.Model):
     job_sub_type = models.CharField(max_length=50)
     job_category = models.ForeignKey('JobCategory',related_name='sub_type')
+    date = models.DateTimeField(null=False)
 
     def __unicode__(self):
         return u'{f}'.format(f=self.job_sub_type)
@@ -80,6 +83,8 @@ class JobSubCategory(models.Model):
 class Service(models.Model):
     announcement = models.ForeignKey('Announcement',related_name='announcement')
     client = models.ForeignKey('Client',related_name='client')
+    cost = MoneyField(max_digits=10, decimal_places=0, default_currency='CLP', null=False)
+    creation_date = models.DateTimeField(null=False)
 
     def __unicode__(self):
         return u'{f}'.format(f=self.announcement.professional.user.username + 'presta servicio a: ' +self.client.user.username )

@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.twitter',
     'corsheaders',
+    'djmoney',
 ]
 
 MIDDLEWARE = [
