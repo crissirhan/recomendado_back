@@ -89,7 +89,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 class JobSubCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobSubCategory
-        fields = ("id","job_sub_type",)
+        fields = ("id","job_sub_type","job_category")
         depth = 2
 
 class JobCategoriesSerializer(serializers.ModelSerializer):
