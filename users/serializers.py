@@ -72,7 +72,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     #weekdays = serializers.SerializerMethodField()
     class Meta:
         model = Announcement
-        fields = ("id", "title", "description",  "professional", "publish_date", "expire_date", "job", "job_subtype", "location", "availability","availability_display","movility")
+        fields = ("id", "title", "description",  "professional", "price", "publish_date", "expire_date", "job", "job_subtype", "location", "availability","availability_display","movility")
         depth = 2
 
     def get_availability_display(self,obj):
@@ -105,14 +105,14 @@ class ServicesSerializer(serializers.ModelSerializer):
     announcement = AnnouncementSerializer(many=False)
     class Meta:
         model = Service
-        fields = ("id","announcement","client")
+        fields = ("id","announcement","client", "cost" , "creation_date")
 
 class PostServicesSerializer(serializers.ModelSerializer):
     client_id= serializers.PrimaryKeyRelatedField(source='client',read_only=False, queryset=Client.objects.all())
     announcement_id = serializers.PrimaryKeyRelatedField(source='announcement',read_only=False, queryset=Announcement.objects.all())
     class Meta:
         model = Service
-        fields = ("id","announcement_id","client_id")
+        fields = ("id","announcement_id","client_id", "cost" , "creation_date")
     def create(self, validated_data):
         print(validated_data)
         client_data = validated_data.pop('client')
@@ -141,7 +141,7 @@ class PostAnnoucementSerializer(serializers.ModelSerializer):
     availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
     class Meta:
         model = Announcement
-        fields = ("id","title", "description", "professional_id","job_id","job_subtype_id", "publish_date", "expire_date", "location", "availability", "movility")
+        fields = ("id","title", "description", "price", "professional_id","job_id","job_subtype_id", "publish_date", "expire_date", "location", "availability", "movility")
     def create(self, validated_data):
         print(validated_data)
         professional_data = validated_data.pop('professional')
