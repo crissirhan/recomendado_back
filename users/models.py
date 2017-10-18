@@ -75,7 +75,6 @@ class JobCategory(models.Model):
 class JobSubCategory(models.Model):
     job_sub_type = models.CharField(max_length=50)
     job_category = models.ForeignKey('JobCategory',related_name='sub_type')
-    date = models.DateTimeField(null=False)
 
     def __unicode__(self):
         return u'{f}'.format(f=self.job_sub_type)
