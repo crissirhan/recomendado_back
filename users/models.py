@@ -61,9 +61,8 @@ class Announcement(models.Model):
 
     def get_weekdays(self):
         return self.WEEKDAYS
-
-    def __str__(self):
-        return self.professional.user.username + ' publicita trabajo como: ' + self.job.job_type + '. Entre: ' + self.publish_date.strftime(" %d %B, %Y") + ' y ' + self.expire_date.strftime(" %d %B, %Y")
+    def __unicode__(self):
+        return u'{f}'.format(f=self.professional.user.username + ' publicita trabajo como: ' + self.job.job_type + '. Entre: ' + self.publish_date.strftime(" %d %B, %Y") + ' y ' + self.expire_date.strftime(" %d %B, %Y"))
 
 class JobCategory(models.Model):
     job_type = models.CharField(max_length=50)
