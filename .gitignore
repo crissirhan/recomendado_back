@@ -3,3 +3,4 @@ images/
 *.sqlite3
 migrations/
 */migrations/*
+*.sqlite
