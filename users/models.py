@@ -60,6 +60,7 @@ class Announcement(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=3000)
     price = MoneyField(max_digits=10, decimal_places=0, default_currency='CLP', null=False)
+    visible = models.BooleanField(default=True)
 
     def get_weekdays(self):
         return self.WEEKDAYS
