@@ -1,6 +1,6 @@
 from recomendado_backend.settings.base import *
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['35.196.31.174', u'api.recomendado-dev.samir.cl' ]
 # Here in the OS the images and files witll be uploaded and served
 MEDIA_ROOT = '/var/www/recomendado/'
