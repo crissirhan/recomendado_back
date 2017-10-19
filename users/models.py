@@ -10,7 +10,7 @@ from djmoney.models.fields import MoneyField
 
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="client")
-    profile_picture = models.ImageField(upload_to='images/client_profile_picture/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='images/client_profile_pictures/', blank=True, null=True)
 
     def __unicode__(self):
         return u'{f}'.format(f=self.user.username)
@@ -25,7 +25,7 @@ class Professional(models.Model):
     phone_regex = RegexValidator(regex=r'^\+?1?\d{8,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone_number = models.CharField(max_length = 15, validators=[phone_regex], blank=True)
     identification = models.ImageField(upload_to='images/professional_identification/', blank=True, null=True)
-    profile_picture = models.ImageField(upload_to='images/professional_profile_picture/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='images/professional_profile_pictures/', blank=True, null=True)
     #TODO: add more identification and certification related fields
     def __unicode__(self):
         return u'{f}'.format(f=self.user.username)
