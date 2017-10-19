@@ -23,7 +23,7 @@ class Professional(models.Model):
     house_number = models.IntegerField()
     phone_regex = RegexValidator(regex=r'^\+?1?\d{8,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone_number = models.CharField(max_length = 15, validators=[phone_regex], blank=True)
-    identification = models.ImageField(upload_to='images/', blank=True, null=True)
+    identification = models.ImageField(upload_to='images/professional_identification/', blank=True, null=True)
     #TODO: add more identification and certificatiin related fields
     def __unicode__(self):
         return u'{f}'.format(f=self.user.username)
@@ -58,7 +58,7 @@ class Announcement(models.Model):
     availability = MultiSelectField(choices=WEEKDAYS, max_choices=7)
     movility = models.CharField(max_length=50)
     title = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
+    description = models.CharField(max_length=3000)
     price = MoneyField(max_digits=10, decimal_places=0, default_currency='CLP', null=False)
 
     def get_weekdays(self):
@@ -68,6 +68,8 @@ class Announcement(models.Model):
 
 class JobCategory(models.Model):
     job_type = models.CharField(max_length=50)
+    description = models.CharField(max_length=500, blank=True, null=True)
+    image = models.ImageField(upload_to='images/job_category/', blank=True, null=True)
 
     def __unicode__(self):
         return u'{f}'.format(f=self.job_type)
@@ -75,6 +77,8 @@ class JobCategory(models.Model):
 class JobSubCategory(models.Model):
     job_sub_type = models.CharField(max_length=50)
     job_category = models.ForeignKey('JobCategory',related_name='sub_type')
+    description = models.CharField(max_length=3000, blank=True, null=True)
+    image = models.ImageField(upload_to='images/job_sub_category/', blank=True, null=True)
 
     def __unicode__(self):
         return u'{f}'.format(f=self.job_sub_type)

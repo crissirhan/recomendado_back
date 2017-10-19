@@ -90,14 +90,14 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 class JobSubCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobSubCategory
-        fields = ("id","job_sub_type","job_category")
+        fields = ("id","job_sub_type","job_category", "description", "image")
         depth = 2
 
 class JobCategoriesSerializer(serializers.ModelSerializer):
     sub_type = JobSubCategoriesSerializer(many=True)
     class Meta:
         model = JobCategory
-        fields = ("id","job_type","sub_type")
+        fields = ("id","job_type","sub_type", "description", "image")
         depth = 2
 
 class ServicesSerializer(serializers.ModelSerializer):
