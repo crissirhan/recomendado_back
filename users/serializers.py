@@ -14,7 +14,7 @@ class ClientSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False)
     class Meta:
         model = Client
-        fields = ("id", "user")
+        fields = ("id", "user", "profile_picture")
         depth = 2
 
     def update(self, instance, validated_data):
@@ -43,7 +43,7 @@ class ProfessionalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Professional
-        fields = ("id", "user", "rut", "region", "city", "street", "house_number", "phone_number", "identification")
+        fields = ("id", "user", "rut", "region", "city", "street", "house_number", "phone_number", "identification", "profile_picture")
         depth = 2
 
     def update(self, instance, validated_data):
@@ -72,7 +72,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     #weekdays = serializers.SerializerMethodField()
     class Meta:
         model = Announcement
-        fields = ("id", "visible", "title", "description",  "professional", "price", "publish_date", "expire_date", "job", "job_subtype", "location", "availability","availability_display","movility")
+        fields = ("id", "visible", "title", "description",  "professional", "price", "publish_date", "expire_date", "job", "job_subtype", "location", "availability","availability_display","movility", "announcement_thumbnail")
         depth = 2
 
     def get_availability_display(self,obj):
@@ -141,7 +141,7 @@ class PostAnnoucementSerializer(serializers.ModelSerializer):
     availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
     class Meta:
         model = Announcement
-        fields = ("id","title", "visible", "description", "price", "professional_id","job_id","job_subtype_id", "publish_date", "expire_date", "location", "availability", "movility")
+        fields = ("id","title", "visible", "description", "price", "professional_id","job_id","job_subtype_id", "publish_date", "expire_date", "location", "availability", "movility", "announcement_thumbnail")
     def create(self, validated_data):
         print(validated_data)
         professional_data = validated_data.pop('professional')
