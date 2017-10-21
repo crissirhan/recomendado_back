@@ -43,7 +43,7 @@ class ProfessionalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Professional
-        fields = ("id", "user", "rut", "region", "city", "street", "house_number", "phone_number", "identification", "profile_picture")
+        fields = ("id", "user","experience", "rut", "region", "city", "street", "house_number", "phone_number", "identification", "profile_picture")
         depth = 2
 
     def update(self, instance, validated_data):
