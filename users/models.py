@@ -26,7 +26,7 @@ class Professional(models.Model):
     phone_number = models.CharField(max_length = 15, validators=[phone_regex], blank=True)
     identification = models.ImageField(upload_to='images/professional_identification/', blank=True, null=True)
     profile_picture = models.ImageField(upload_to='images/professional_profile_pictures/', blank=True, null=True)
-    experience = models.CharField(max_length=2000)
+    experience = models.CharField(max_length=2000, blank=True, null=True)
 
     #TODO: add more identification and certification related fields
     def __unicode__(self):
