@@ -126,7 +126,7 @@ STATIC_URL = '/static/'
 
 # For django-rest-auth registration
 # http://django-rest-auth.readthedocs.io/en/latest/installation.html
-SITE_ID = 1
+SITE_ID = 2
 
 # In order to server static files
 
