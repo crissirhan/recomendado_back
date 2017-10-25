@@ -30,7 +30,7 @@ class ClientSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user_data = validated_data.pop('user')
         password = user_data.pop('password')
-        user = User.objects.create(**user_data)
+        user, created = User.objects.get_or_create(**user_data)
         user.set_password(password)
         user.save()
         client = Client.objects.create(user=user, **validated_data)
@@ -59,12 +59,21 @@ class ProfessionalSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user_data = validated_data.pop('user')
         password = user_data.pop('password')
-        user = User.objects.create(**user_data)
+        user, created = User.objects.get_or_create(**user_data)
         user.set_password(password)
         user.save()
         professional = Professional.objects.create(user=user, **validated_data)
         return professional
 
+class CompleteUserSerializer(serializers.ModelSerializer):
+    client = ClientSerializer(many=False)
+    professional = ProfessionalSerializer(many=False)
+    class Meta:
+        model = User
+        write_only_fields = ['password']
+        read_only_fields = ['id']
+        fields = ("id","username","password","first_name", "last_name", "email", "client", "professional")
+        depth = 2
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     availability_display = serializers.SerializerMethodField()

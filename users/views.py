@@ -39,6 +39,10 @@ class ProfessionalViewSet(viewsets.ModelViewSet):
         serializer.save()
         return Response(serializer.data)
 
+class CompleteUserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = CompleteUserSerializer
+
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer

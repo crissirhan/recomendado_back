@@ -30,6 +30,7 @@ router.register(prefix='services', viewset=ServiceViewSet)
 router.register(base_name="post",prefix='post-services', viewset=PostServiceViewSet)
 router.register(base_name="post",prefix='post-reviews', viewset=PostReviewViewSet)
 router.register(base_name="post",prefix='post-announcements', viewset=PostAnnouncementViewSet)
+router.register(prefix='user', viewset=CompleteUserViewSet)
 urlpatterns = router.urls
 
 urlpatterns += [
