@@ -14,7 +14,8 @@ from rest_framework.response import Response
 from rest_framework import generics
 from django.db.models import Count, Avg
 from rest_framework import filters
-
+from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+from rest_auth.registration.views import SocialLoginView
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
@@ -159,3 +160,8 @@ class PostReviewViewSet(viewsets.ModelViewSet):
 class PostAnnouncementViewSet(viewsets.ModelViewSet):
     queryset = Announcement.objects.all()
     serializer_class = PostAnnoucementSerializer
+
+# Socal login
+
+class FacebookLogin(SocialLoginView):
+    adapter_class = FacebookOAuth2Adapter
