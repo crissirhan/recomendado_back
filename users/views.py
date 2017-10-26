@@ -39,9 +39,13 @@ class ProfessionalViewSet(viewsets.ModelViewSet):
         serializer.save()
         return Response(serializer.data)
 
-class CompleteUserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = CompleteUserSerializer
+class ProfessionalWithTokenViewSet(viewsets.ModelViewSet):
+    queryset = Professional.objects.all()
+    serializer_class = ProfessionalSerializer
+
+    def list(self, request):
+        queryset = Professional.objects.get(user=request.user)
+        return queryset
 
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
@@ -109,6 +113,15 @@ class ProfessionalByUsernameList(generics.ListAPIView):
         username = self.kwargs.get(self.lookup_url_kwarg)
         professional = Professional.objects.filter(user__username = username)
         return professional
+
+class ReviewsByClientList(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+    lookup_url_kwarg = "username"
+
+    def get_queryset(self):
+        username = self.kwargs.get(self.lookup_url_kwarg)
+        reviews = Review.objects.filter(service__client__user__username = username)
+        return reviews
 
 class ClientByUsernameList(generics.ListAPIView):
     serializer_class = ClientSerializer

@@ -30,7 +30,6 @@ router.register(prefix='services', viewset=ServiceViewSet)
 router.register(base_name="post",prefix='post-services', viewset=PostServiceViewSet)
 router.register(base_name="post",prefix='post-reviews', viewset=PostReviewViewSet)
 router.register(base_name="post",prefix='post-announcements', viewset=PostAnnouncementViewSet)
-router.register(prefix='user', viewset=CompleteUserViewSet)
 urlpatterns = router.urls
 
 urlpatterns += [
@@ -44,5 +43,6 @@ urlpatterns += [
     url(r'^announcements/job-subtype/(?P<sub_category_name>[-\w]+)/$', AnnouncementByJobSubCategoryViewSet.as_view()),
     url(r'^professionals-username/(?P<username>\w+|[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/$', ProfessionalByUsernameList.as_view()),
     url(r'^clients-username/(?P<username>.+)/$', ClientByUsernameList.as_view()),
+    url(r'^clients-reviews/(?P<username>.+)/$', ReviewsByClientList.as_view()),
     url(r'^rest-auth/facebook/$', FacebookLogin.as_view(), name='fb_login'),
 ]
