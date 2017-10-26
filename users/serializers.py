@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers, fields
 from users.models import *
+from base64 import decodestring
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -59,10 +60,11 @@ class ProfessionalSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user_data = validated_data.pop('user')
         password = user_data.pop('password')
+        profile_picture = decodestring(user_data.pop('profile_picture'))
         user, created = User.objects.get_or_create(**user_data)
         user.set_password(password)
         user.save()
-        professional = Professional.objects.create(user=user, **validated_data)
+        professional = Professional.objects.create(user=user, profile_picture=profile_picture, **validated_data)
         return professional
 
 class CompleteUserSerializer(serializers.ModelSerializer):
