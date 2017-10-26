@@ -114,13 +114,13 @@ class ProfessionalByUsernameList(generics.ListAPIView):
         professional = Professional.objects.filter(user__username = username)
         return professional
 
-class ReviewsByClientList(generics.ListAPIView):
+class ClientReviewsList(generics.ListAPIView):
     serializer_class = ReviewSerializer
-    lookup_url_kwarg = "username"
+    lookup_url_kwarg = "client"
 
     def get_queryset(self):
-        username = self.kwargs.get(self.lookup_url_kwarg)
-        reviews = Review.objects.filter(service__client__user__username = username)
+        client_id = self.kwargs.get(self.lookup_url_kwarg)
+        reviews = Review.objects.filter(service__client__id = client_id)
         return reviews
 
 class ClientByUsernameList(generics.ListAPIView):
