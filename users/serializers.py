@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ClientSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False)
-    profile_picture = Base64ImageField(allow_blank=True)
+    profile_picture = Base64ImageField(required=False)
     class Meta:
         model = Client
         fields = ("id", "user", "profile_picture")
@@ -40,7 +40,7 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class ProfessionalSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False)
-    profile_picture = Base64ImageField(allow_blank=True)
+    profile_picture = Base64ImageField(required=False)
     class Meta:
         model = Professional
         fields = ("id", "user","experience", "rut", "region", "city", "street", "house_number", "phone_number", "identification", "profile_picture")
@@ -78,7 +78,7 @@ class CompleteUserSerializer(serializers.ModelSerializer):
 class AnnouncementSerializer(serializers.ModelSerializer):
     availability_display = serializers.SerializerMethodField()
     availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
-    announcement_thumbnail = Base64ImageField(allow_blank=True)
+    announcement_thumbnail = Base64ImageField(required=False)
     #weekdays = serializers.SerializerMethodField()
     class Meta:
         model = Announcement
@@ -149,7 +149,7 @@ class PostAnnoucementSerializer(serializers.ModelSerializer):
     job_id = serializers.PrimaryKeyRelatedField(source='job',read_only=False, queryset=JobCategory.objects.all())
     job_subtype_id= serializers.PrimaryKeyRelatedField(source='job_subtype',read_only=False,required=False, queryset=JobSubCategory.objects.all())
     availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
-    announcement_thumbnail = Base64ImageField(allow_blank=True)
+    announcement_thumbnail = Base64ImageField(required=False)
     class Meta:
         model = Announcement
         fields = ("id","title", "visible", "description", "price", "professional_id","job_id","job_subtype_id", "publish_date", "expire_date", "location", "availability", "movility", "announcement_thumbnail")
