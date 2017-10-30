@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers, fields
 from users.models import *
-from base64 import decodestring
+from drf_extra_fields.fields import Base64ImageField
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,6 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ClientSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False)
+    profile_picture = Base64ImageField()
     class Meta:
         model = Client
         fields = ("id", "user", "profile_picture")
@@ -35,13 +36,11 @@ class ClientSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         client = Client.objects.create(user=user, **validated_data)
-        print(client)
-        print(user)
         return client
 
 class ProfessionalSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False)
-
+    profile_picture = Base64ImageField()
     class Meta:
         model = Professional
         fields = ("id", "user","experience", "rut", "region", "city", "street", "house_number", "phone_number", "identification", "profile_picture")
