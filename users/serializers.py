@@ -78,6 +78,7 @@ class CompleteUserSerializer(serializers.ModelSerializer):
 class AnnouncementSerializer(serializers.ModelSerializer):
     availability_display = serializers.SerializerMethodField()
     availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
+    announcement_thumbnail = Base64ImageField()
     #weekdays = serializers.SerializerMethodField()
     class Meta:
         model = Announcement
@@ -148,6 +149,7 @@ class PostAnnoucementSerializer(serializers.ModelSerializer):
     job_id = serializers.PrimaryKeyRelatedField(source='job',read_only=False, queryset=JobCategory.objects.all())
     job_subtype_id= serializers.PrimaryKeyRelatedField(source='job_subtype',read_only=False,required=False, queryset=JobSubCategory.objects.all())
     availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
+    announcement_thumbnail = Base64ImageField()
     class Meta:
         model = Announcement
         fields = ("id","title", "visible", "description", "price", "professional_id","job_id","job_subtype_id", "publish_date", "expire_date", "location", "availability", "movility", "announcement_thumbnail")
