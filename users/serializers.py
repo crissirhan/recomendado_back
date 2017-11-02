@@ -94,7 +94,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     announcement_image = AnnouncementImageSerializer(many=True)
     class Meta:
         model = Announcement
-        fields = ("id", "visible", "title", "description", "announcement_image", "job_tag", "professional", "price", "publish_date", "expire_date", "job", "job_subtype", "location", "availability","availability_display","movility", "announcement_thumbnail")
+        fields = ("id", "visible", "title", "description", "announcement_image", "job_tag", "professional", "price", "publish_date", "expire_date", "location", "approved", "availability","availability_display","movility", "announcement_thumbnail")
         depth = 2
 
     def get_availability_display(self,obj):
