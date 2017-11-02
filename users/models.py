@@ -56,8 +56,6 @@ class Announcement(models.Model):
     professional = models.ForeignKey('Professional')
     publish_date = models.DateTimeField(null=False)
     expire_date = models.DateTimeField(null=False)
-    job = models.ForeignKey('JobCategory')
-    job_subtype = models.ForeignKey('JobSubCategory', blank=True, null=True)
     location = models.CharField(max_length=50)
     availability = MultiSelectField(choices=WEEKDAYS, max_choices=7)
     movility = models.CharField(max_length=50)
@@ -65,12 +63,24 @@ class Announcement(models.Model):
     description = models.CharField(max_length=3000)
     price = MoneyField(max_digits=10, decimal_places=0, default_currency='CLP', null=False)
     visible = models.BooleanField(default=True)
+    approved = models.BooleanField(default=False)
     announcement_thumbnail = models.ImageField(upload_to='images/announcement_thumbnails/', blank=True, null=True)
 
     def get_weekdays(self):
         return self.WEEKDAYS
     def __unicode__(self):
         return u'{f}'.format(f=self.professional.user.username + ' publicita trabajo como: ' + self.job.job_type + '. Entre: ' + self.publish_date.strftime(" %d %B, %Y") + ' y ' + self.expire_date.strftime(" %d %B, %Y"))
+
+class JobTag(models.Model):
+    announcement = models.ForeignKey('Announcement')
+    job = models.ForeignKey('JobSubCategory')
+
+    def __unicode__(self):
+        return u'{f}'.format(f='Anuncio: ' + self.announcement.__unicode__ + '. Tipo trabajo: ' + self.job.__unicode__)
+
+class AnnouncementImage(models.Model):
+    image = models.ImageField(upload_to='images/announcement_images/', blank=True, null=True)
+    announcement = models.ForeignKey('Announcement')
 
 class JobCategory(models.Model):
     job_type = models.CharField(max_length=50)

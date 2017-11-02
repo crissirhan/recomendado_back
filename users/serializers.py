@@ -75,14 +75,26 @@ class CompleteUserSerializer(serializers.ModelSerializer):
         fields = ("id","username","password","first_name", "last_name", "email", "client", "professional")
         depth = 2
 
+class AnnouncementImageSerializer(serializers.ModelSerializer):
+    image = Base64ImageField(required=True)
+    class Meta:
+        model= AnnouncementImage
+        fields= ("id", "image")
+
+class JobTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobTag
+        fields = ("id", "announcement", "job")
+
 class AnnouncementSerializer(serializers.ModelSerializer):
     availability_display = serializers.SerializerMethodField()
     availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
     announcement_thumbnail = Base64ImageField(required=False)
-    #weekdays = serializers.SerializerMethodField()
+    job_tag = JobTagSerializer(many=True)
+    announcement_image = AnnouncementImageSerializer(many=True)
     class Meta:
         model = Announcement
-        fields = ("id", "visible", "title", "description",  "professional", "price", "publish_date", "expire_date", "job", "job_subtype", "location", "availability","availability_display","movility", "announcement_thumbnail")
+        fields = ("id", "visible", "title", "description", "announcement_image", "job_tag", "professional", "price", "publish_date", "expire_date", "job", "job_subtype", "location", "availability","availability_display","movility", "announcement_thumbnail")
         depth = 2
 
     def get_availability_display(self,obj):
