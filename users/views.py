@@ -162,6 +162,16 @@ class AnnouncementByJobSubCategoryViewSet(generics.ListAPIView):
         queryset = Announcement.objects.filter(job_tags__job__job_sub_type=category_name)
         return queryset
 
+class JobsByNameViewSet(generics.ListAPIView):
+    serializer_class = JobSubCategoriesSerializer
+    lookup_url_kwarg = "name"
+    filter_backends = (filters.SearchFilter,)
+
+    def get_queryset(self):
+        name = self.kwargs.get(self.lookup_url_kwarg)
+        queryset = JobSubCategory.objects.filter(job_sub_type=name)
+        return queryset
+
 class JobCategoryViewSet(viewsets.ModelViewSet):
     queryset = JobCategory.objects.all()
     serializer_class = JobCategoriesSerializer
