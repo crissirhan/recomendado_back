@@ -169,7 +169,7 @@ class JobsByNameViewSet(generics.ListAPIView):
 
     def get_queryset(self):
         name = self.kwargs.get(self.lookup_url_kwarg)
-        queryset = JobSubCategory.objects.filter(job_sub_type=name)
+        queryset = JobSubCategory.objects.get(job_sub_type=name)
         return queryset
 
 class JobCategoryViewSet(viewsets.ModelViewSet):
