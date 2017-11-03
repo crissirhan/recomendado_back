@@ -170,8 +170,8 @@ class JobsByNameViewSet(generics.RetrieveAPIView):
     def get_queryset(self):
         name = self.kwargs.get(self.lookup_url_kwarg)
         try:
-            queryset = JobSubCategory.objects.get(job_sub_type=name)
-        except SomeModel.DoesNotExist:
+            queryset = JobSubCategory.objects.filter(job_sub_type=name)
+        except JobSubCategory.DoesNotExist:
             queryset = None
         return queryset
 
