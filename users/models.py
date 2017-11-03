@@ -69,18 +69,18 @@ class Announcement(models.Model):
     def get_weekdays(self):
         return self.WEEKDAYS
     def __unicode__(self):
-        return u'{f}'.format(f=self.professional.user.username + ' publicita trabajo como: ' + self.job.job_type + '. Entre: ' + self.publish_date.strftime(" %d %B, %Y") + ' y ' + self.expire_date.strftime(" %d %B, %Y"))
+        return u'{f}'.format(f=self.professional.user.username + ' publicita trabajo entre: ' + self.publish_date.strftime(" %d %B, %Y") + ' y ' + self.expire_date.strftime(" %d %B, %Y"))
 
 class JobTag(models.Model):
-    announcement = models.ForeignKey('Announcement')
-    job = models.ForeignKey('JobSubCategory')
+    announcement = models.ForeignKey('Announcement',related_name='job_tags')
+    job = models.ForeignKey('JobSubCategory',related_name='job')
 
     def __unicode__(self):
-        return u'{f}'.format(f='Anuncio: ' + self.announcement.__unicode__ + '. Tipo trabajo: ' + self.job.__unicode__)
+        return u'{f}'.format(f='Anuncio: ' + self.announcement.__unicode__() + '. Tipo trabajo: ' + self.job.__unicode__())
 
 class AnnouncementImage(models.Model):
     image = models.ImageField(upload_to='images/announcement_images/', blank=True, null=True)
-    announcement = models.ForeignKey('Announcement')
+    announcement = models.ForeignKey('Announcement',related_name='announcement_images')
 
 class JobCategory(models.Model):
     job_type = models.CharField(max_length=50)

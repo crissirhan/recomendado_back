@@ -79,23 +79,35 @@ class AnnouncementImageSerializer(serializers.ModelSerializer):
     image = Base64ImageField(required=True)
     class Meta:
         model= AnnouncementImage
-        fields= ("id", "image")
+        fields= ("id", "image", "announcement")
+        depth = 2
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 
 class JobTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobTag
         fields = ("id", "announcement", "job")
+        depth = 3
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     availability_display = serializers.SerializerMethodField()
     availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
     announcement_thumbnail = Base64ImageField(required=False)
-    job_tag = JobTagSerializer(many=True)
-    announcement_image = AnnouncementImageSerializer(many=True)
+    job_tags = JobTagSerializer(many=True)
+    announcement_images = AnnouncementImageSerializer(many=True)
     class Meta:
         model = Announcement
-        fields = ("id", "visible", "title", "description", "announcement_image", "job_tag", "professional", "price", "publish_date", "expire_date", "location", "approved", "availability","availability_display","movility", "announcement_thumbnail")
-        depth = 2
+        fields = ("id", "visible", "title", "description", "announcement_images", "job_tags", "professional", "price", "publish_date", "expire_date", "location", "approved", "availability","availability_display","movility", "announcement_thumbnail")
+        depth = 3
 
     def get_availability_display(self,obj):
         return obj.get_availability_display()
@@ -108,6 +120,20 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             setattr(instance, attr, value)
         instance.save()
         return instance
+
+    def create(self, validated_data):
+        images_data = validated_data.pop('announcement_images')
+        job_tags_data = validated_data.pop('job_tags')
+        images = []
+        jobs = []
+        for image_data in images_data:
+            image, created = AnnouncementImage.objects.get_or_create(**image_data)
+            images.append(image)
+        for job_tag_data in job_tags_data:
+            job_tag, created = JobTag.objects.get_or_create(**job_tag_data)
+            jobs.append(job_tag)
+        announcement, created = Announcement.objects.get_or_create(*validated_data)
+        return announcement
 
 class JobSubCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
