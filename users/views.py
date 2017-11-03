@@ -64,6 +64,14 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         serializer.save()
         return Response(serializer.data)
 
+class AnnouncementImageViewSet(viewsets.ModelViewSet):
+    queryset = AnnouncementImage.objects.all()
+    serializer_class = AnnouncementImageSerializer
+
+class JobTagViewSet(viewsets.ModelViewSet):
+    queryset = JobTag.objects.all()
+    serializer_class = JobTagSerializer
+
 class ProfessionalReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
     lookup_url_kwarg = "professional"
