@@ -197,7 +197,7 @@ class PostReviewViewSet(viewsets.ModelViewSet):
 
 class PostAnnouncementViewSet(viewsets.ModelViewSet):
     queryset = Announcement.objects.all()
-    serializer_class = PostAnnoucementSerializer
+    serializer_class = AnnouncementSerializer
 
 # Socal login
 

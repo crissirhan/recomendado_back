@@ -124,15 +124,24 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         images_data = validated_data.pop('announcement_images')
         job_tags_data = validated_data.pop('job_tags')
-        images = []
-        jobs = []
-        for image_data in images_data:
-            image, created = AnnouncementImage.objects.get_or_create(**image_data)
-            images.append(image)
-        for job_tag_data in job_tags_data:
-            job_tag, created = JobTag.objects.get_or_create(**job_tag_data)
-            jobs.append(job_tag)
-        announcement, created = Announcement.objects.get_or_create(*validated_data)
+        professional_data = validated_data.pop('professional')
+        professional = Professional.objects.get(id=professional_data.id)
+        try:
+            announcement, created = Announcement.objects.get_or_create(professional=professional, **validated_data)
+            try:
+                for image_data in images_data:
+                    image, created = AnnouncementImage.objects.get_or_create(announcement=announcement, **image_data)
+                    images.append(image)
+            except:
+                print("error creando las imagenes del anuncio")
+            try:
+                for job_tag_data in job_tags_data:
+                    job_tag, created = JobTag.objects.get_or_create(announcement=announcement, **job_tag_data)
+                    jobs.append(job_tag)
+            except:
+                print("error creando los tags del anuncio")
+        except:
+            print("error creando el anuncio")
         return announcement
 
 class JobSubCategoriesSerializer(serializers.ModelSerializer):
