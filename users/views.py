@@ -65,7 +65,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 class AnnouncementImageViewSet(viewsets.ModelViewSet):
-    queryset = AnnouncementImage.objects.filter(approved=True)
+    queryset = AnnouncementImage.objects.filter()
     serializer_class = AnnouncementImageSerializer
 
 class JobTagViewSet(viewsets.ModelViewSet):
