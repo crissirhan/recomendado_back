@@ -52,7 +52,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
 
 class AnnouncementViewSet(viewsets.ModelViewSet):
-    queryset = Announcement.objects.all()
+    queryset = Announcement.objects.filter(approved=True)
     serializer_class = AnnouncementSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ( 'title', 'description', 'job__job_type', 'job_subtype__job_sub_type', 'location', 'professional__user__email', 'professional__user__first_name', 'professional__user__last_name',)
@@ -65,7 +65,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 class AnnouncementImageViewSet(viewsets.ModelViewSet):
-    queryset = AnnouncementImage.objects.all()
+    queryset = AnnouncementImage.objects.filter(approved=True)
     serializer_class = AnnouncementImageSerializer
 
 class JobTagViewSet(viewsets.ModelViewSet):
@@ -101,7 +101,7 @@ class ProfessionalAnnouncementList(generics.ListAPIView):
 
     def get_queryset(self):
         professional_id = self.kwargs.get(self.lookup_url_kwarg)
-        announcement = Announcement.objects.filter(professional__id = professional_id)
+        announcement = Announcement.objects.filter(professional__id = professional_id, approved=True)
         return announcement
 
 class ClientServiceList(generics.ListAPIView):
@@ -148,7 +148,7 @@ class AnnouncementByJobCategoryViewSet(generics.ListAPIView):
 
     def get_queryset(self):
         category_name = self.kwargs.get(self.lookup_url_kwarg)
-        queryset = Announcement.objects.filter(job_tags__job__job_sub_type=category_name)
+        queryset = Announcement.objects.filter(job_tags__job__job_sub_type=category_name, approved=True)
         return queryset
 
 class AnnouncementByJobSubCategoryViewSet(generics.ListAPIView):
@@ -159,7 +159,7 @@ class AnnouncementByJobSubCategoryViewSet(generics.ListAPIView):
 
     def get_queryset(self):
         category_name = self.kwargs.get(self.lookup_url_kwarg)
-        queryset = Announcement.objects.filter(job_tags__job__job_sub_type=category_name)
+        queryset = Announcement.objects.filter(job_tags__job__job_sub_type=category_name, approved=True)
         return queryset
 
 class JobsByNameViewSet(generics.ListAPIView):
