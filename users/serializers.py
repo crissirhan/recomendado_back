@@ -81,18 +81,36 @@ class AnnouncementImageSerializer(serializers.ModelSerializer):
         model= AnnouncementImage
         fields= ("id", "image", "announcement")
         depth = 2
+
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
         return instance
 
+class JobSubCategoriesSerializer(serializers.ModelSerializer):
+    id = serializers.ModelField(model_field=JobSubCategory()._meta.get_field('id'))
+    class Meta:
+        model = JobSubCategory
+        fields = ("id","job_sub_type","job_category", "description", "image")
+        depth = 2
+
 class JobTagSerializer(serializers.ModelSerializer):
     #job_id = serializers.PrimaryKeyRelatedField(source='job',read_only=False, queryset=JobCategory.objects.all())
+    job = JobSubCategoriesSerializer(many=False)
     class Meta:
         model = JobTag
         fields = ("id", "announcement", "job")
         depth = 3
+        extra_kwargs = {
+            "id": {
+                "read_only": False,
+                "required": False,
+            },
+            "job": {
+                "read_only": False,
+            }
+        }
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -133,29 +151,21 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         job_tags_data = validated_data.pop('job_tags')
         professional_data = validated_data.pop('professional')
         professional = Professional.objects.get(id=professional_data.id)
+        announcement, created = Announcement.objects.get_or_create(professional=professional, **validated_data)
         try:
-            announcement, created = Announcement.objects.get_or_create(professional=professional, **validated_data)
-            try:
-                for image_data in images_data:
-                    image, created = AnnouncementImage.objects.get_or_create(announcement=announcement, **image_data)
-            except:
-                print("error creando las imagenes del anuncio")
-            try:
-                for job_tag_data in job_tags_data:
-                    job_data = job_tag_data.pop('job')
-                    job = JobSubCategory.objects.get(id=job_data.id)
-                    job_tag, created = JobTag.objects.get_or_create(job=job, announcement=announcement, **validated_data)
-            except:
-                print("error creando los tags del anuncio")
-            return announcement
+            for image_data in images_data:
+                image, created = AnnouncementImage.objects.get_or_create(announcement=announcement, **image_data)
         except:
-            print("error creando el anuncio")
+            print("error creando las imagenes del anuncio")
+        try:
+            for job_tag_data in job_tags_data:
+                job_data = job_tag_data.pop('job')
+                job = JobSubCategory.objects.get(id=job_data["id"])
+                job_tag, created = JobTag.objects.get_or_create(job=job, announcement=announcement, **validated_data)
+        except:
+            print("error creando los tags del anuncio")
+        return announcement
 
-class JobSubCategoriesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = JobSubCategory
-        fields = ("id","job_sub_type","job_category", "description", "image")
-        depth = 2
 
 class JobCategoriesSerializer(serializers.ModelSerializer):
     sub_type = JobSubCategoriesSerializer(many=True)
