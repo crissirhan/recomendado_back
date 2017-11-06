@@ -157,7 +157,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         for job_tag_data in job_tags_data:
             job_data = job_tag_data.pop('job')
             job = JobSubCategory.objects.get(id=job_data["id"])
-            job_tag, created = JobTag.objects.get_or_create(job=job, announcement=announcement, **validated_data)
+            job_tag, created = JobTag.objects.get_or_create(job=job, announcement=announcement, **job_tag_data)
         return announcement
 
 
