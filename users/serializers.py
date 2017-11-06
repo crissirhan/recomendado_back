@@ -97,7 +97,7 @@ class JobSubCategoriesSerializer(serializers.ModelSerializer):
 
 class JobTagSerializer(serializers.ModelSerializer):
     #job_id = serializers.PrimaryKeyRelatedField(source='job',read_only=False, queryset=JobCategory.objects.all())
-    #job = JobSubCategoriesSerializer(many=False)
+    job = JobSubCategoriesSerializer(many=False)
     class Meta:
         model = JobTag
         fields = ("id", "announcement", "job")
