@@ -88,10 +88,10 @@ class AnnouncementImageSerializer(serializers.ModelSerializer):
         return instance
 
 class JobTagSerializer(serializers.ModelSerializer):
-    job_id = serializers.PrimaryKeyRelatedField(source='job',read_only=False, queryset=JobCategory.objects.all())
+    #job_id = serializers.PrimaryKeyRelatedField(source='job',read_only=False, queryset=JobCategory.objects.all())
     class Meta:
         model = JobTag
-        fields = ("id", "announcement", "job", "job_id")
+        fields = ("id", "announcement", "job")
         depth = 3
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
