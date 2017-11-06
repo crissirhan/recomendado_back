@@ -152,18 +152,12 @@ class AnnouncementSerializer(serializers.ModelSerializer):
         professional_data = validated_data.pop('professional')
         professional = Professional.objects.get(id=professional_data.id)
         announcement, created = Announcement.objects.get_or_create(professional=professional, **validated_data)
-        try:
-            for image_data in images_data:
-                image, created = AnnouncementImage.objects.get_or_create(announcement=announcement, **image_data)
-        except:
-            print("error creando las imagenes del anuncio")
-        try:
-            for job_tag_data in job_tags_data:
-                job_data = job_tag_data.pop('job')
-                job = JobSubCategory.objects.get(id=job_data["id"])
-                job_tag, created = JobTag.objects.get_or_create(job=job, announcement=announcement, **validated_data)
-        except:
-            print("error creando los tags del anuncio")
+        for image_data in images_data:
+            image, created = AnnouncementImage.objects.get_or_create(announcement=announcement, **image_data)
+        for job_tag_data in job_tags_data:
+            job_data = job_tag_data.pop('job')
+            job = JobSubCategory.objects.get(id=job_data["id"])
+            job_tag, created = JobTag.objects.get_or_create(job=job, announcement=announcement, **validated_data)
         return announcement
 
 
