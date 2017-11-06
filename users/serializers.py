@@ -142,7 +142,8 @@ class AnnouncementSerializer(serializers.ModelSerializer):
                 print("error creando las imagenes del anuncio")
             try:
                 for job_tag_data in job_tags_data:
-                    job = JobSubCategory.objects.get(id=job_tag_data.id)
+                    job_data = job_tag_data.pop('job')
+                    job = JobSubCategory.objects.get(id=job_data.id)
                     job_tag, created = JobTag.objects.get_or_create(job=job, announcement=announcement, **validated_data)
             except:
                 print("error creando los tags del anuncio")
