@@ -88,15 +88,21 @@ class AnnouncementImageSerializer(serializers.ModelSerializer):
         return instance
 
 class JobTagSerializer(serializers.ModelSerializer):
+    job_id = serializers.PrimaryKeyRelatedField(source='job',read_only=False, queryset=JobCategory.objects.all())
     class Meta:
         model = JobTag
-        fields = ("id", "announcement", "job")
+        fields = ("id", "announcement", "job", "job_id")
         depth = 3
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
         return instance
+    def create(self, validated_data):
+        job_data = validated_data.pop('job')
+        job = JobSubCategory.objects.get(job_data.id)
+        job_tag, created = JobTag.objects.get_or_create(job=job, **validated_data)
+        return job_tag
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     availability_display = serializers.SerializerMethodField()
