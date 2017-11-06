@@ -100,7 +100,7 @@ class JobTagSerializer(serializers.ModelSerializer):
         return instance
     def create(self, validated_data):
         job_data = validated_data.pop('job')
-        job = JobSubCategory.objects.get(job_data.id)
+        job = JobSubCategory.objects.get(id=job_data.id)
         job_tag, created = JobTag.objects.get_or_create(job=job, **validated_data)
         return job_tag
 
@@ -145,9 +145,9 @@ class AnnouncementSerializer(serializers.ModelSerializer):
                     job_tag, created = JobTag.objects.get_or_create(announcement=announcement, **job_tag_data)
             except:
                 print("error creando los tags del anuncio")
+            return announcement
         except:
             print("error creando el anuncio")
-        return announcement
 
 class JobSubCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
