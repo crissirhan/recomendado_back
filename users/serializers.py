@@ -90,14 +90,22 @@ class AnnouncementImageSerializer(serializers.ModelSerializer):
 
 class JobSubCategoriesSerializer(serializers.ModelSerializer):
     id = serializers.ModelField(model_field=JobSubCategory()._meta.get_field('id'))
+    image = Base64ImageField(required=False)
     class Meta:
         model = JobSubCategory
         fields = ("id","job_sub_type","job_category", "description", "image")
         depth = 2
 
+class JobSubCategoriesAuxSerializer(serializers.ModelSerializer):
+    id = serializers.ModelField(model_field=JobSubCategory()._meta.get_field('id'))
+    class Meta:
+        model = JobSubCategory
+        fields = ("id",)
+        depth = 2
+
 class JobTagSerializer(serializers.ModelSerializer):
     #job_id = serializers.PrimaryKeyRelatedField(source='job',read_only=False, queryset=JobCategory.objects.all())
-    job = JobSubCategoriesSerializer(many=False)
+    job = JobSubCategoriesAuxSerializer(many=False)
     class Meta:
         model = JobTag
         fields = ("id", "announcement", "job")
