@@ -100,7 +100,7 @@ class JobSubCategoriesAuxSerializer(serializers.ModelSerializer):
     id = serializers.ModelField(model_field=JobSubCategory()._meta.get_field('id'))
     class Meta:
         model = JobSubCategory
-        fields = ("id",)
+        fields = ("id", "job_sub_type", "job_category", "description")
         depth = 2
 
 class JobTagSerializer(serializers.ModelSerializer):
