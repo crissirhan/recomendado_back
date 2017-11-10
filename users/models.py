@@ -63,7 +63,7 @@ class Announcement(models.Model):
     description = models.CharField(max_length=3000)
     price = MoneyField(max_digits=10, decimal_places=0, default_currency='CLP', null=False)
     visible = models.BooleanField(default=True)
-    approved = models.BooleanField(default=False)
+    approved = models.BooleanField(default=True)
     announcement_thumbnail = models.ImageField(upload_to='images/announcement_thumbnails/', blank=True, null=True)
 
     def get_weekdays(self):
