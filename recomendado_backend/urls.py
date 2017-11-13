@@ -43,7 +43,7 @@ urlpatterns += [
     url(r'^professional-announcements/(?P<professional>[-\w]+)/$', ProfessionalAnnouncementList.as_view()),
     url(r'^client-services/(?P<client>[-\w]+)/$', ClientServiceList.as_view()),
     url(r'^announcements/job/(?P<category_name>[\w|\W]+)/$', AnnouncementByJobCategoryViewSet.as_view()),
-    url(r'^job-sub-categories/name/(?P<name>[-\w]+)/$', JobsByNameViewSet.as_view()),
+    url(r'^job-sub-categories/name/(?P<name>[\w|\W]+)/$', JobsByNameViewSet.as_view()),
     url(r'^announcements/job-subtype/(?P<sub_category_name>[\w|\W]+)/$', AnnouncementByJobSubCategoryViewSet.as_view()),
     url(r'^professionals-username/(?P<username>\w+|[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/$', ProfessionalByUsernameList.as_view()),
     url(r'^clients-username/(?P<username>.+)/$', ClientByUsernameList.as_view()),
