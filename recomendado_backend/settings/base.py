@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.twitter',
     'corsheaders',
     'djmoney',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

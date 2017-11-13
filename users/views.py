@@ -5,6 +5,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from users.models import *
 from users.serializers import *
+from users.filters import *
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
@@ -13,9 +14,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 from django.db.models import Count, Avg
-from rest_framework import filters
+#from rest_framework import filters
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from rest_auth.registration.views import SocialLoginView
+from django_filters import rest_framework as filters
+
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
@@ -54,8 +57,8 @@ class ReviewViewSet(viewsets.ModelViewSet):
 class AnnouncementViewSet(viewsets.ModelViewSet):
     queryset = Announcement.objects.filter(approved=True)
     serializer_class = AnnouncementSerializer
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ( 'title', 'description', 'job__job_type', 'job_subtype__job_sub_type', 'location', 'professional__user__email', 'professional__user__first_name', 'professional__user__last_name',)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_class = AnnouncementFilter
 
     def partial_update(self, request, *args, **kwargs):
         instance = self.queryset.get(pk=kwargs.get('pk'))
@@ -165,8 +168,9 @@ class ClientByUsernameList(generics.ListAPIView):
 class AnnouncementByJobCategoryViewSet(generics.ListAPIView):
     serializer_class = AnnouncementSerializer
     lookup_url_kwarg = "category_name"
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ( 'title', 'description', 'job_tags__job__job_type', 'job_tags__job_subtype__job_sub_type', 'location', 'professional__user__email', 'professional__user__first_name', 'professional__user__last_name',)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_class = AnnouncementFilter
+    #filter_fields = ( 'title', 'description', 'job_tags__job__job_type', 'job_tags__job_subtype__job_sub_type', 'location', 'professional__user__email', 'professional__user__first_name', 'professional__user__last_name',)
 
     def get_queryset(self):
         category_name = self.kwargs.get(self.lookup_url_kwarg)
@@ -176,8 +180,9 @@ class AnnouncementByJobCategoryViewSet(generics.ListAPIView):
 class AnnouncementByJobSubCategoryViewSet(generics.ListAPIView):
     serializer_class = AnnouncementSerializer
     lookup_url_kwarg = "sub_category_name"
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ( 'title', 'description', 'job__job_type', 'job_subtype__job_sub_type', 'location', 'professional__user__email', 'professional__user__first_name', 'professional__user__last_name',)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_class = AnnouncementFilter
+    #filter_fields = ( 'title', 'description', 'job__job_type', 'job_subtype__job_sub_type', 'location', 'professional__user__email', 'professional__user__first_name', 'professional__user__last_name',)
 
     def get_queryset(self):
         category_name = self.kwargs.get(self.lookup_url_kwarg)
@@ -187,7 +192,7 @@ class AnnouncementByJobSubCategoryViewSet(generics.ListAPIView):
 class JobsByNameViewSet(generics.ListAPIView):
     serializer_class = JobSubCategoriesSerializer
     lookup_url_kwarg = "name"
-    filter_backends = (filters.SearchFilter,)
+    filter_backends = (filters.DjangoFilterBackend,)
 
     def get_queryset(self):
         name = self.kwargs.get(self.lookup_url_kwarg)
