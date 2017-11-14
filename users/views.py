@@ -6,6 +6,7 @@ from rest_framework import viewsets
 from users.models import *
 from users.serializers import *
 from users.filters import *
+from users.pagination import *
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
@@ -18,6 +19,7 @@ from django.db.models import Count, Avg
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from rest_auth.registration.views import SocialLoginView
 from django_filters import rest_framework as filters
+from rest_framework.filters import OrderingFilter
 
 
 class ClientViewSet(viewsets.ModelViewSet):
@@ -57,8 +59,11 @@ class ReviewViewSet(viewsets.ModelViewSet):
 class AnnouncementViewSet(viewsets.ModelViewSet):
     queryset = Announcement.objects.filter(approved=True)
     serializer_class = AnnouncementSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = AnnouncementFilter
+    ordering_fields = ('price', 'publish_date')
+    ordering = ('publish_date',)
+    pagination_class = StandardResultsSetPagination
 
     def partial_update(self, request, *args, **kwargs):
         instance = self.queryset.get(pk=kwargs.get('pk'))
