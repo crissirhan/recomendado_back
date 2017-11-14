@@ -37,7 +37,7 @@ class AnnouncementFilter(filters.FilterSet):
             ) | queryset.filter(
                 job_tags__job__job_sub_type__icontains=value,
             )
-        return queryset
+        return queryset.distinct()
     def min_rating_filter(self, queryset, name, value):
         if value:
             queryset = queryset.annotate(average_rating = Avg('service__review__rating')).filter(average_rating__gte=value)
