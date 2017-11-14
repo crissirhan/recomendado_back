@@ -35,7 +35,7 @@ class Professional(models.Model):
 class Review(models.Model):
     #client = models.ForeignKey('Client')
     #professional = models.ForeignKey('Professional')
-    service = models.ForeignKey('Service')
+    service = models.ForeignKey('Service',related_name='review')
     rating = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
     client_comment = models.CharField(max_length=10000, blank=True, null=True)
     professional_response = models.CharField(max_length=10000, blank=True, null=True)
@@ -53,7 +53,7 @@ class Announcement(models.Model):
               ('sab', 'Sábado'),
               ('dom', 'Domingo'))
 
-    professional = models.ForeignKey('Professional')
+    professional = models.ForeignKey('Professional',related_name='announcement')
     publish_date = models.DateTimeField(null=False)
     expire_date = models.DateTimeField(null=False)
     location = models.CharField(max_length=50)
@@ -100,8 +100,8 @@ class JobSubCategory(models.Model):
         return u'{f}'.format(f=self.job_sub_type)
 
 class Service(models.Model):
-    announcement = models.ForeignKey('Announcement',related_name='announcement')
-    client = models.ForeignKey('Client',related_name='client')
+    announcement = models.ForeignKey('Announcement',related_name='service')
+    client = models.ForeignKey('Client',related_name='service')
     cost = MoneyField(max_digits=10, decimal_places=0, default_currency='CLP', null=False)
     creation_date = models.DateTimeField(null=False)
 
