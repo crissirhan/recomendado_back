@@ -18,9 +18,10 @@ class AnnouncementFilter(filters.FilterSet):
     min_rating = filters.NumberFilter(method='min_rating_filter')
     min_review_count = filters.NumberFilter(method='min_review_count_filter')
 
+
     class Meta:
         model = Announcement
-        fields = ['title', 'description', 'max_price', 'min_price', 'job', 'professional', 'professional_first_name', 'professional_last_name', 'location', 'search','min_publish_date', 'max_publish_date', 'min_rating' ]
+        fields = ['title', 'description', 'max_price', 'min_price', 'job', 'professional', 'professional_first_name', 'professional_last_name', 'location', 'search','min_publish_date', 'max_publish_date', 'min_rating' , 'visible']
 
     def search_filter(self, queryset, name, value):
         if value:
