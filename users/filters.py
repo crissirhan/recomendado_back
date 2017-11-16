@@ -14,8 +14,8 @@ class AnnouncementFilter(filters.FilterSet):
     job = filters.CharFilter(name='job_tags__job__job_sub_type', lookup_expr='icontains')
     tags = filters.CharFilter(method='tags_filter')
     search = filters.CharFilter(method='search_filter')
-    min_publish_date = filters.DateTimeFilter(name="publish_date",lookup_expr='gte')
-    max_publish_date = filters.DateTimeFilter(name="publish_date",lookup_expr='lte')
+    min_publish_date = filters.IsoDateTimeFilter(name="publish_date",lookup_expr='gte')
+    max_publish_date = filters.IsoDateTimeFilter(name="publish_date",lookup_expr='lte')
     min_rating = filters.NumberFilter(method='min_rating_filter')
     min_review_count = filters.NumberFilter(method='min_review_count_filter')
 
