@@ -50,6 +50,7 @@ class AnnouncementFilter(filters.FilterSet):
         return queryset
     def tags_filter(self, queryset, name, value):
         if value:
-            for val in value:
+            value_list = [val.strip() for val in value.split(',')]
+            for val in value_list:
                 queryset = queryset.filter(job_tags__job__id=val)
         return queryset
