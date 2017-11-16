@@ -51,5 +51,5 @@ class AnnouncementFilter(filters.FilterSet):
     def tags_filter(self, queryset, name, value):
         if value:
             for val in value:
-                queryset = queryset.filter(job_tags__job__job_sub_type=value)
+                queryset = queryset.filter(job_tags__job__job_sub_type=val)
         return queryset
