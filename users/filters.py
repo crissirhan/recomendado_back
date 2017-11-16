@@ -12,6 +12,7 @@ class AnnouncementFilter(filters.FilterSet):
     professional_first_name = filters.CharFilter(name='professional__user__first_name', lookup_expr='icontains')
     professional_last_name = filters.CharFilter(name='professional__user__last_name', lookup_expr='icontains')
     job = filters.CharFilter(name='job_tags__job__job_sub_type', lookup_expr='icontains')
+    tags = filters.CharFilter(method='tags_filter')
     search = filters.CharFilter(method='search_filter')
     min_publish_date = filters.DateTimeFilter(name="publish_date",lookup_expr='gte')
     max_publish_date = filters.DateTimeFilter(name="publish_date",lookup_expr='lte')
@@ -46,4 +47,9 @@ class AnnouncementFilter(filters.FilterSet):
     def min_review_count_filter(self, queryset, name, value):
         if value:
             queryset = queryset.annotate(review_count = Count('service__review__rating')).filter(review_count__gte=value)
+        return queryset
+    def tags_filter(self, queryset, name, value):
+        if value:
+            for val in value:
+                queryset = queryset.filter(job_tags__job__job_sub_type=value)
         return queryset
