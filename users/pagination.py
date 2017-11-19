@@ -11,7 +11,7 @@ class StandardResultsSetPagination(PageNumberPagination):
         return Response(OrderedDict([
              ('lastPage', self.page.paginator.num_pages),
              ('totalElements', self.page.paginator.count),
-             ('countItemsOnPage', self.page.count),
+             ('countItemsOnPage', self.page.object_list.count),
              ('current', self.page.number),
              ('next', self.get_next_link()),
              ('previous', self.get_previous_link()),
