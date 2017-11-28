@@ -57,7 +57,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
 
 class AnnouncementViewSet(viewsets.ModelViewSet):
-    queryset = Announcement.objects.filter(approved=True)
+    queryset = Announcement.objects.filter(approved=True).annotate(review_count = Count('service__review')).annotate(review_average = Avg('service__review__rating'))
     serializer_class = AnnouncementSerializer
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = AnnouncementFilter
