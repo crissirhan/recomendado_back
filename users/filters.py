@@ -11,6 +11,7 @@ class AnnouncementFilter(filters.FilterSet):
     professional = filters.CharFilter(name='professional__user__username', lookup_expr='icontains')
     professional_first_name = filters.CharFilter(name='professional__user__first_name', lookup_expr='icontains')
     professional_last_name = filters.CharFilter(name='professional__user__last_name', lookup_expr='icontains')
+    professional_id = filters.NumberFilter(name='professional__id')
     job = filters.CharFilter(name='job_tags__job__job_sub_type', lookup_expr='icontains')
     tags = filters.CharFilter(method='tags_filter')
     search = filters.CharFilter(method='search_filter')
@@ -19,10 +20,9 @@ class AnnouncementFilter(filters.FilterSet):
     min_rating = filters.NumberFilter(method='min_rating_filter')
     min_review_count = filters.NumberFilter(method='min_review_count_filter')
 
-
     class Meta:
         model = Announcement
-        fields = ['id', 'title', 'description', 'max_price', 'min_price', 'job','tags', 'professional', 'professional_first_name', 'professional_last_name', 'location', 'search','min_publish_date', 'max_publish_date', 'min_rating' , 'visible']
+        fields = ['id', 'title', 'description', 'max_price', 'min_price', 'job','tags', 'professional', 'professional_id', 'professional_first_name', 'professional_last_name', 'location', 'search','min_publish_date', 'max_publish_date', 'min_rating' , 'visible']
 
     def search_filter(self, queryset, name, value):
         if value:
