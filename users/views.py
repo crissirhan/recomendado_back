@@ -55,6 +55,11 @@ class ProfessionalWithTokenViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
+    filter_class = ReviewFilter
+    ordering_fields = ('date', 'rating')
+    ordering = ('date',)
+    pagination_class = StandardResultsSetPagination
 
 class AnnouncementViewSet(viewsets.ModelViewSet):
     queryset = Announcement.objects.filter(approved=True).annotate(review_count = Count('service__review')).annotate(review_average = Avg('service__review__rating'))
@@ -83,6 +88,11 @@ class JobTagViewSet(viewsets.ModelViewSet):
 class ProfessionalReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
     lookup_url_kwarg = "professional"
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
+    filter_class = ReviewFilter
+    ordering_fields = ('date', 'rating')
+    ordering = ('date',)
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         professional_id = self.kwargs.get(self.lookup_url_kwarg)
@@ -106,6 +116,11 @@ class ProfessionalReviewList(generics.ListAPIView):
 class AnnouncementReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
     lookup_url_kwarg = "announcement"
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
+    filter_class = ReviewFilter
+    ordering_fields = ('date', 'rating')
+    ordering = ('date',)
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         announcement_id = self.kwargs.get(self.lookup_url_kwarg)
@@ -155,6 +170,11 @@ class ProfessionalByUsernameList(generics.ListAPIView):
 class ClientReviewsList(generics.ListAPIView):
     serializer_class = ReviewSerializer
     lookup_url_kwarg = "client"
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
+    filter_class = ReviewFilter
+    ordering_fields = ('date', 'rating')
+    ordering = ('date',)
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         client_id = self.kwargs.get(self.lookup_url_kwarg)

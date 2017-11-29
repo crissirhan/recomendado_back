@@ -3,6 +3,14 @@ from django_filters import rest_framework as filters
 from users.models import *
 from django.db.models import Avg, Count
 
+class ReviewFilter(filters.FilterSet):
+    service_id = filters.NumberFilter(name='service__id')
+    announcement_id = filters.NumberFilter(name='service__announcement__id')
+    client_id = filters.NumberFilter(name='client__id')
+    class Meta:
+        model = Review
+        fields = ["id","service_id","date","client_id", "announcement_id","rating"]
+
 class AnnouncementFilter(filters.FilterSet):
     min_price = filters.NumberFilter(name="price", lookup_expr='gte')
     max_price = filters.NumberFilter(name="price", lookup_expr='lte')
