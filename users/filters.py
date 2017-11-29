@@ -7,9 +7,10 @@ class ReviewFilter(filters.FilterSet):
     service_id = filters.NumberFilter(name='service__id')
     announcement_id = filters.NumberFilter(name='service__announcement__id')
     client_id = filters.NumberFilter(name='client__id')
+    professional_id = filters.NumberFilter(name='service__announcement__professional__id')
     class Meta:
         model = Review
-        fields = ["id","service_id","date","client_id", "announcement_id","rating"]
+        fields = ["id","service_id","date","client_id", "announcement_id", "professional_id", "rating"]
 
 class AnnouncementFilter(filters.FilterSet):
     min_price = filters.NumberFilter(name="price", lookup_expr='gte')
