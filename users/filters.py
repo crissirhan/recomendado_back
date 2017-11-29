@@ -6,7 +6,7 @@ from django.db.models import Avg, Count
 class ReviewFilter(filters.FilterSet):
     service_id = filters.NumberFilter(name='service__id')
     announcement_id = filters.NumberFilter(name='service__announcement__id')
-    client_id = filters.NumberFilter(name='client__id')
+    client_id = filters.NumberFilter(name='service__client__id')
     professional_id = filters.NumberFilter(name='service__announcement__professional__id')
     class Meta:
         model = Review
