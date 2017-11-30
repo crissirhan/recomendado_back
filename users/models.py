@@ -6,7 +6,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator, RegexVa
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 from djmoney.models.fields import MoneyField
-
+from django.db.models import Count, Avg
 
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="client")
@@ -28,7 +28,12 @@ class Professional(models.Model):
     profile_picture = models.ImageField(upload_to='images/professional_profile_pictures/', blank=True, null=True)
     experience = models.CharField(max_length=2000, blank=True, null=True)
 
-    #TODO: add more identification and certification related fields
+    @property
+    def average(self):
+        return Review.objects.filter(service__announcement__professional__id=self.id).aggregate(Avg('rating'))["rating__avg"]
+    def count(self):
+        return Review.objects.filter(service__announcement__professional__id=self.id).aggregate(Count('rating'))["rating__count"]
+
     def __unicode__(self):
         return u'{f}'.format(f=self.user.username)
 
@@ -56,7 +61,7 @@ class Announcement(models.Model):
     professional = models.ForeignKey('Professional',related_name='announcement')
     publish_date = models.DateTimeField(null=False)
     expire_date = models.DateTimeField(null=False)
-    location = models.CharField(max_length=50)
+    location = models.CharField(max_length=50, null=True)
     availability = MultiSelectField(choices=WEEKDAYS, max_choices=7)
     movility = models.CharField(max_length=50, null=True)
     title = models.CharField(max_length=50)

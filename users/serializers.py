@@ -43,7 +43,7 @@ class ProfessionalSerializer(serializers.ModelSerializer):
     profile_picture = Base64ImageField(required=False)
     class Meta:
         model = Professional
-        fields = ("id", "user","experience", "rut", "region", "city", "street", "house_number", "phone_number", "identification", "profile_picture")
+        fields = ("id", "average", "count", "user","experience", "rut", "region", "city", "street", "house_number", "phone_number", "identification", "profile_picture")
         depth = 2
 
     def update(self, instance, validated_data):
@@ -238,9 +238,11 @@ class PostAnnoucementSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     service = ServicesSerializer(many=False)
+    review_count = serializers.FloatField(read_only = True)
+    review_average = serializers.FloatField(read_only = True)
     class Meta:
         model = Review
-        fields = ("id","service", "rating", "client_comment", "professional_response", "date")
+        fields = ("id","service","review_count", "review_average", "rating", "client_comment", "professional_response", "date")
         depth = 5
     def create(self, validated_data):
         service_data = validated_data.pop('service')
