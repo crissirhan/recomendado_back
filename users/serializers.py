@@ -184,7 +184,21 @@ class ServicesSerializer(serializers.ModelSerializer):
     announcement = AnnouncementSerializer(many=False)
     class Meta:
         model = Service
-        fields = ("id","announcement","client", "cost" , "creation_date")
+        fields = ("id","announcement","client", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date")
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
+    def create(self, validated_data):
+        print(validated_data)
+        client_data = validated_data.pop('client')
+        client = Client.objects.get(id=client_data.id)
+        print(client_data.id)
+        announcement_data = validated_data.pop('announcement')
+        announcement = Announcement.objects.get(id=announcement_data.id)
+        service = Service.objects.create(client=client, announcement=announcement, **validated_data)
+        return service
 
 class PostServicesSerializer(serializers.ModelSerializer):
     client_id= serializers.PrimaryKeyRelatedField(source='client',read_only=False, queryset=Client.objects.all())

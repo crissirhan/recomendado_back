@@ -152,6 +152,11 @@ class ProfessionalAnnouncementList(generics.ListAPIView):
 class ClientServiceList(generics.ListAPIView):
     serializer_class = ServicesSerializer
     lookup_url_kwarg = "client"
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
+    filter_class = ServiceFilter
+    ordering_fields = ('creation_date')
+    ordering = ('creation_date',)
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         client_id = self.kwargs.get(self.lookup_url_kwarg)
@@ -238,10 +243,27 @@ class JobSubCategoryViewSet(viewsets.ModelViewSet):
 class ServiceViewSet(viewsets.ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServicesSerializer
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
+    filter_class = ServiceFilter
+    ordering_fields = ('creation_date')
+    ordering = ('creation_date',)
+    pagination_class = StandardResultsSetPagination
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.queryset.get(pk=kwargs.get('pk'))
+        serializer = self.serializer_class(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 class PostServiceViewSet(viewsets.ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = PostServicesSerializer
+    filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
+    filter_class = ServiceFilter
+    ordering_fields = ('creation_date')
+    ordering = ('creation_date',)
+    pagination_class = StandardResultsSetPagination
 
 class PostReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()

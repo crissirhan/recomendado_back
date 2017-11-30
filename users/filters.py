@@ -12,6 +12,13 @@ class ReviewFilter(filters.FilterSet):
         model = Review
         fields = ["id","service_id","date","client_id", "announcement_id", "professional_id", "rating"]
 
+class ServiceFilter(filters.FilterSet):
+    client_id = filters.NumberFilter(name='client__id')
+    professional_id = filters.NumberFilter(name='announcement__professional__id')
+    class Meta:
+        model = Service
+        fields = ["id","announcement","client", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date", "client_id", "professional_id"]
+
 class AnnouncementFilter(filters.FilterSet):
     min_price = filters.NumberFilter(name="price", lookup_expr='gte')
     max_price = filters.NumberFilter(name="price", lookup_expr='lte')

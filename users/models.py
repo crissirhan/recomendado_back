@@ -112,6 +112,10 @@ class Service(models.Model):
     client = models.ForeignKey('Client',related_name='service')
     cost = MoneyField(max_digits=10, decimal_places=0, default_currency='CLP', null=False)
     creation_date = models.DateTimeField(null=False)
+    contacted_date = models.DateTimeField(null=True)
+    contacted = models.BooleanField(default=False)
+    hired = models.BooleanField(default= False)
+    hired_date = models.DateTimeField(null=True)
 
     def __unicode__(self):
         return u'{f}'.format(f=self.announcement.professional.user.username + 'presta servicio a: ' +self.client.user.username )
