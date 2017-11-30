@@ -136,13 +136,13 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     announcement_thumbnail = Base64ImageField(required=False)
     job_tags = JobTagSerializer(many=True)
     announcement_images = AnnouncementImageSerializer(many=True)
-    professional_id= serializers.PrimaryKeyRelatedField(source='professional',read_only=False, queryset=Professional.objects.all())
+    professional_id = serializers.PrimaryKeyRelatedField(source='professional',read_only=False, queryset=Professional.objects.all())
     review_count = serializers.FloatField(read_only = True)
     review_average = serializers.FloatField(read_only = True)
 
     class Meta:
         model = Announcement
-        fields = ("id", "review_count", "review_average", "visible", "title", "description", "announcement_images", "job_tags", "professional", "professional_id", "price", "publish_date", "expire_date", "location", "approved", "availability","availability_display","movility", "announcement_thumbnail")
+        fields = ("id", "professional_rating_count", "professional_rating_average", "review_count", "review_average", "visible", "title", "description", "announcement_images", "job_tags", "professional", "professional_id", "price", "publish_date", "expire_date", "location", "approved", "availability","availability_display","movility", "announcement_thumbnail")
         depth = 3
 
     def get_availability_display(self,obj):

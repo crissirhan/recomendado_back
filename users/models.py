@@ -28,7 +28,6 @@ class Professional(models.Model):
     profile_picture = models.ImageField(upload_to='images/professional_profile_pictures/', blank=True, null=True)
     experience = models.CharField(max_length=2000, blank=True, null=True)
 
-    @property
     def average(self):
         return Review.objects.filter(service__announcement__professional__id=self.id).aggregate(Avg('rating'))["rating__avg"]
     def count(self):
@@ -73,6 +72,10 @@ class Announcement(models.Model):
 
     def get_weekdays(self):
         return self.WEEKDAYS
+    def professional_rating_average(self):
+        return Review.objects.filter(service__announcement__professional__id=self.professional.id).aggregate(Avg('rating'))["rating__avg"]
+    def professional_rating_count(self):
+        return Review.objects.filter(service__announcement__professional__id=self.professional.id).aggregate(Count('rating'))["rating__count"]
     def __unicode__(self):
         return u'{f}'.format(f=self.professional.user.username + ' publicita trabajo entre: ' + self.publish_date.strftime(" %d %B, %Y") + ' y ' + self.expire_date.strftime(" %d %B, %Y"))
 
