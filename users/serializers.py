@@ -179,12 +179,26 @@ class JobCategoriesSerializer(serializers.ModelSerializer):
         fields = ("id","job_type","sub_type", "description", "image")
         depth = 2
 
+class ReviewSerializerAux(serializers.ModelSerializer):
+    review_count = serializers.FloatField(read_only = True)
+    review_average = serializers.FloatField(read_only = True)
+    class Meta:
+        model = Review
+        fields = ("id","review_count", "review_average", "rating", "client_comment", "professional_response", "date")
+        depth = 5
+    def create(self, validated_data):
+        service_data = validated_data.pop('service')
+        service = Service.objects.filter(id=service_data.id)
+        review = Review.objects.create(service=service, **validated_data)
+        return review
+
 class ServicesSerializer(serializers.ModelSerializer):
     client = ClientSerializer(many=False)
     announcement = AnnouncementSerializer(many=False)
+    review = ReviewSerializerAux(many=True)
     class Meta:
         model = Service
-        fields = ("id","announcement","client", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date")
+        fields = ("id","announcement","client", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date", "review")
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
