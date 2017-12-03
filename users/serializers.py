@@ -198,7 +198,7 @@ class ServicesSerializer(serializers.ModelSerializer):
     review = ReviewSerializerAux(many=True)
     class Meta:
         model = Service
-        fields = ("id","announcement","client", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date", "review","professional_answered")
+        fields = ("id","announcement","client", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date", "review","professional_rejected")
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -219,7 +219,7 @@ class PostServicesSerializer(serializers.ModelSerializer):
     announcement_id = serializers.PrimaryKeyRelatedField(source='announcement',read_only=False, queryset=Announcement.objects.all())
     class Meta:
         model = Service
-        fields = ("id","announcement_id","client_id", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date","professional_answered")
+        fields = ("id","announcement_id","client_id", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date","professional_rejected")
     def create(self, validated_data):
         print(validated_data)
         client_data = validated_data.pop('client')

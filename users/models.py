@@ -116,7 +116,7 @@ class Service(models.Model):
     contacted = models.BooleanField(default=False)
     hired = models.BooleanField(default=False)
     hired_date = models.DateTimeField(null=True, blank=True)
-    professional_answered = models.BooleanField(default=False)
+    professional_rejected = models.BooleanField(default=False)
 
     def __unicode__(self):
         return u'{f}'.format(f=self.announcement.professional.user.username + 'presta servicio a: ' +self.client.user.username )
