@@ -17,7 +17,7 @@ class ServiceFilter(filters.FilterSet):
     professional_id = filters.NumberFilter(name='announcement__professional__id')
     class Meta:
         model = Service
-        fields = ["id","announcement","client", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date", "client_id", "professional_id"]
+        fields = ["id","announcement","client", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date", "client_id", "professional_id", "professional_answered"]
 
 class AnnouncementFilter(filters.FilterSet):
     min_price = filters.NumberFilter(name="price", lookup_expr='gte')
