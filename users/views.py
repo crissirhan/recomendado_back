@@ -241,7 +241,7 @@ class JobSubCategoryViewSet(viewsets.ModelViewSet):
     serializer_class = JobSubCategoriesSerializer
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    queryset = Service.objects.all()
+    queryset = Service.objects.filter(deleted=False)
     serializer_class = ServicesSerializer
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = ServiceFilter
