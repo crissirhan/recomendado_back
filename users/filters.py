@@ -15,9 +15,17 @@ class ReviewFilter(filters.FilterSet):
 class ServiceFilter(filters.FilterSet):
     client_id = filters.NumberFilter(name='client__id')
     professional_id = filters.NumberFilter(name='announcement__professional__id')
+    reviewed = filters.BooleanFilter(method='reviewed_filter')
     class Meta:
         model = Service
-        fields = ["id","announcement","client", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date", "client_id", "professional_id", "professional_rejected"]
+        fields = ["id","announcement","client", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date", "client_id", "professional_id", "professional_rejected", "reviewed"]
+
+    def reviewed_filter(self, queryset, name, value):
+        if value is not None:
+            print(queryset)
+            queryset = queryset.filter(review__isnull=not value)
+            print(queryset)
+        return queryset
 
 class AnnouncementFilter(filters.FilterSet):
     min_price = filters.NumberFilter(name="price", lookup_expr='gte')
