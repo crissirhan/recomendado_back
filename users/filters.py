@@ -15,7 +15,7 @@ class ReviewFilter(filters.FilterSet):
         fields = ["id","service_id","date","client_id", "announcement_id", "professional_id", "rating", "min_rating", "distinct_professional"]
     def distinct_professional_filter(self, queryset, name, value):
         if value:
-            queryset = queryset.order_by('service__announcement__professional').distinct('service__announcement__professional')
+            queryset = queryset.order_by('service__announcement__professional__id').distinct('service__announcement__professional__id')
         return queryset
 
 class ServiceFilter(filters.FilterSet):
