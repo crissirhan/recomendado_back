@@ -8,9 +8,10 @@ class ReviewFilter(filters.FilterSet):
     announcement_id = filters.NumberFilter(name='service__announcement__id')
     client_id = filters.NumberFilter(name='service__client__id')
     professional_id = filters.NumberFilter(name='service__announcement__professional__id')
+    min_rating = filters.NumberFilter(name='rating', lookup_expr='gte')
     class Meta:
         model = Review
-        fields = ["id","service_id","date","client_id", "announcement_id", "professional_id", "rating"]
+        fields = ["id","service_id","date","client_id", "announcement_id", "professional_id", "rating", "min_rating"]
 
 class ServiceFilter(filters.FilterSet):
     client_id = filters.NumberFilter(name='client__id')
