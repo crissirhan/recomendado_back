@@ -9,9 +9,14 @@ class ReviewFilter(filters.FilterSet):
     client_id = filters.NumberFilter(name='service__client__id')
     professional_id = filters.NumberFilter(name='service__announcement__professional__id')
     min_rating = filters.NumberFilter(name='rating', lookup_expr='gte')
+    distinct_professional = filters.BooleanFilter(method='distinct_filter')
     class Meta:
         model = Review
-        fields = ["id","service_id","date","client_id", "announcement_id", "professional_id", "rating", "min_rating"]
+        fields = ["id","service_id","date","client_id", "announcement_id", "professional_id", "rating", "min_rating", "distinct_professional"]
+    def distinct_professional_filter(self, queryset, name, value):
+        if value:
+            queryset = queryset.distinct('service__announcement__professional')
+        return queryset
 
 class ServiceFilter(filters.FilterSet):
     client_id = filters.NumberFilter(name='client__id')
