@@ -58,7 +58,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = ReviewFilter
     ordering_fields = ('date', 'rating')
-    ordering = ('date',)
+    ordering = ('-date',)
     pagination_class = StandardResultsSetPagination
 
 class AnnouncementViewSet(viewsets.ModelViewSet):
@@ -67,7 +67,7 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = AnnouncementFilter
     ordering_fields = ('price', 'publish_date')
-    ordering = ('publish_date',)
+    ordering = ('-publish_date',)
     pagination_class = StandardResultsSetPagination
 
     def partial_update(self, request, *args, **kwargs):
@@ -91,7 +91,7 @@ class ProfessionalReviewList(generics.ListAPIView):
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = ReviewFilter
     ordering_fields = ('date', 'rating')
-    ordering = ('date',)
+    ordering = ('-date',)
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
@@ -119,7 +119,7 @@ class AnnouncementReviewList(generics.ListAPIView):
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = ReviewFilter
     ordering_fields = ('date', 'rating')
-    ordering = ('date',)
+    ordering = ('-date',)
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
@@ -155,7 +155,7 @@ class ClientServiceList(generics.ListAPIView):
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = ServiceFilter
     ordering_fields = ('creation_date')
-    ordering = ('creation_date',)
+    ordering = ('-creation_date',)
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
@@ -178,7 +178,7 @@ class ClientReviewsList(generics.ListAPIView):
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = ReviewFilter
     ordering_fields = ('date', 'rating')
-    ordering = ('date',)
+    ordering = ('-date',)
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
@@ -246,7 +246,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = ServiceFilter
     ordering_fields = ('creation_date')
-    ordering = ('creation_date',)
+    ordering = ('-creation_date',)
     pagination_class = StandardResultsSetPagination
 
     def partial_update(self, request, *args, **kwargs):
@@ -262,7 +262,7 @@ class PostServiceViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = ServiceFilter
     ordering_fields = ('creation_date')
-    ordering = ('creation_date',)
+    ordering = ('-creation_date',)
     pagination_class = StandardResultsSetPagination
 
 class PostReviewViewSet(viewsets.ModelViewSet):
