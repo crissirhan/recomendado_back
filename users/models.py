@@ -110,7 +110,7 @@ class JobSubCategory(models.Model):
 class Service(models.Model):
     announcement = models.ForeignKey('Announcement',related_name='service')
     client = models.ForeignKey('Client',related_name='service')
-    cost = MoneyField(max_digits=10, decimal_places=0, default_currency='CLP', null=False)
+    cost = MoneyField(max_digits=10, decimal_places=0, default_currency='CLP', null=True)
     creation_date = models.DateTimeField(null=False)
     contacted_date = models.DateTimeField(null=True, blank=True)
     contacted = models.BooleanField(default=False)
