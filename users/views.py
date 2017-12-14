@@ -154,7 +154,7 @@ class ClientServiceList(generics.ListAPIView):
     lookup_url_kwarg = "client"
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = ServiceFilter
-    ordering_fields = ('creation_date')
+    ordering_fields = ('creation_date',)
     ordering = ('-creation_date',)
     pagination_class = StandardResultsSetPagination
 
@@ -245,7 +245,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
     serializer_class = ServicesSerializer
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = ServiceFilter
-    ordering_fields = ('creation_date')
+    ordering_fields = ('creation_date',)
     ordering = ('-creation_date',)
     pagination_class = StandardResultsSetPagination
 
@@ -261,7 +261,7 @@ class PostServiceViewSet(viewsets.ModelViewSet):
     serializer_class = PostServicesSerializer
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = ServiceFilter
-    ordering_fields = ('creation_date')
+    ordering_fields = ('creation_date',)
     ordering = ('-creation_date',)
     pagination_class = StandardResultsSetPagination
 
