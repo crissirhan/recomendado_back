@@ -241,7 +241,7 @@ class JobSubCategoryViewSet(viewsets.ModelViewSet):
     serializer_class = JobSubCategoriesSerializer
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    queryset = Service.objects.annotate(review_average = Avg('review__rating')).annotate(review_count = Count('review')).filter(deleted=False)
+    queryset = Service.objects.annotate(review_average = Avg('announcement__service__review__rating')).annotate(review_count = Count('announcement__service__review')).filter(deleted=False)
     serializer_class = ServicesSerializer
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = ServiceFilter
