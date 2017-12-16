@@ -196,9 +196,10 @@ class ServicesSerializer(serializers.ModelSerializer):
     client = ClientSerializer(many=False)
     announcement = AnnouncementSerializer(many=False)
     review = ReviewSerializerAux(many=True)
+    review_average = serializers.FloatField(read_only = True)
     class Meta:
         model = Service
-        fields = ("id","announcement","client", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date", "review","professional_rejected", "deleted")
+        fields = ("id","announcement","client", "review_average", "cost" , "creation_date", "contacted", "contacted_date", "hired", "hired_date", "review","professional_rejected", "deleted")
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
             setattr(instance, attr, value)

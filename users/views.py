@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+        # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from django.shortcuts import render
@@ -241,7 +241,7 @@ class JobSubCategoryViewSet(viewsets.ModelViewSet):
     serializer_class = JobSubCategoriesSerializer
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    queryset = Service.objects.filter(deleted=False)
+    queryset = Service.objects.filter(deleted=False).annotate(review_average = Avg('review__rating'))
     serializer_class = ServicesSerializer
     filter_backends = (filters.DjangoFilterBackend, OrderingFilter,)
     filter_class = ServiceFilter
