@@ -2,6 +2,7 @@
 from rest_framework import serializers, fields
 from users.models import *
 from drf_extra_fields.fields import Base64ImageField
+from versatileimagefield.serializers import VersatileImageFieldSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,7 +14,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ClientSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False)
-    profile_picture = Base64ImageField(required=False)
+    profile_picture = VersatileImageFieldSerializer(
+        sizes=[
+            ('full_size', 'url'),
+            ('thumbnail', 'thumbnail__100x100'),
+            ('medium_square_crop', 'crop__400x400'),
+            ('small_square_crop', 'crop__50x50')
+        ]
+    )
     class Meta:
         model = Client
         fields = ("id", "user", "profile_picture")
@@ -40,7 +48,14 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class ProfessionalSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False)
-    profile_picture = Base64ImageField(required=False)
+    profile_picture = VersatileImageFieldSerializer(
+        sizes=[
+            ('full_size', 'url'),
+            ('thumbnail', 'thumbnail__100x100'),
+            ('medium_square_crop', 'crop__400x400'),
+            ('small_square_crop', 'crop__50x50')
+        ]
+    )
     class Meta:
         model = Professional
         fields = ("id", "average", "count", "user","experience", "rut", "region", "city", "street", "house_number", "phone_number", "identification", "profile_picture")
@@ -76,7 +91,15 @@ class CompleteUserSerializer(serializers.ModelSerializer):
         depth = 2
 
 class AnnouncementImageSerializer(serializers.ModelSerializer):
-    image = Base64ImageField(required=True)
+    image = VersatileImageFieldSerializer(
+            sizes=[
+                ('full_size', 'url'),
+                ('thumbnail', 'thumbnail__100x100'),
+                ('medium_square_crop', 'crop__400x400'),
+                ('small_square_crop', 'crop__50x50')
+            ],
+            required = True
+        )
     class Meta:
         model= AnnouncementImage
         fields= ("id", "image", "announcement")
@@ -90,7 +113,14 @@ class AnnouncementImageSerializer(serializers.ModelSerializer):
 
 class JobSubCategoriesSerializer(serializers.ModelSerializer):
     id = serializers.ModelField(model_field=JobSubCategory()._meta.get_field('id'))
-    image = Base64ImageField(required=False)
+    image = VersatileImageFieldSerializer(
+        sizes=[
+            ('full_size', 'url'),
+            ('thumbnail', 'thumbnail__100x100'),
+            ('medium_square_crop', 'crop__400x400'),
+            ('small_square_crop', 'crop__50x50')
+        ]
+    )
     class Meta:
         model = JobSubCategory
         fields = ("id","job_sub_type","job_category", "description", "image")
@@ -133,7 +163,14 @@ class JobTagSerializer(serializers.ModelSerializer):
 class AnnouncementSerializer(serializers.ModelSerializer):
     availability_display = serializers.SerializerMethodField()
     availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
-    announcement_thumbnail = Base64ImageField(required=False)
+    announcement_thumbnail = VersatileImageFieldSerializer(
+        sizes=[
+            ('full_size', 'url'),
+            ('thumbnail', 'thumbnail__100x100'),
+            ('medium_square_crop', 'crop__400x400'),
+            ('small_square_crop', 'crop__50x50')
+        ]
+    )
     job_tags = JobTagSerializer(many=True)
     announcement_images = AnnouncementImageSerializer(many=True)
     professional_id = serializers.PrimaryKeyRelatedField(source='professional',read_only=False, queryset=Professional.objects.all())
@@ -247,7 +284,14 @@ class PostAnnoucementSerializer(serializers.ModelSerializer):
     professional_id= serializers.PrimaryKeyRelatedField(source='professional',read_only=False, queryset=Professional.objects.all())
     job_id = serializers.PrimaryKeyRelatedField(source='job',read_only=False, queryset=JobCategory.objects.all())
     availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
-    announcement_thumbnail = Base64ImageField(required=False)
+    announcement_thumbnail = VersatileImageFieldSerializer(
+        sizes=[
+            ('full_size', 'url'),
+            ('thumbnail', 'thumbnail__100x100'),
+            ('medium_square_crop', 'crop__400x400'),
+            ('small_square_crop', 'crop__50x50')
+        ]
+    )
     class Meta:
         model = Announcement
         fields = ("id","title", "visible", "description", "price", "professional_id","job_id","job_subtype_id", "publish_date", "expire_date", "location", "availability", "movility", "announcement_thumbnail")

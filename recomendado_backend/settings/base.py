@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'djmoney',
     'django_filters',
+    'versatileimagefield',
 ]
 
 MIDDLEWARE = [
@@ -63,7 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware', # Localization 
+    'django.middleware.locale.LocaleMiddleware', # Localization
 ]
 
 ROOT_URLCONF = 'recomendado_backend.urls'
