@@ -176,6 +176,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     professional_id = serializers.PrimaryKeyRelatedField(source='professional',read_only=False, queryset=Professional.objects.all())
     review_count = serializers.FloatField(read_only = True)
     review_average = serializers.FloatField(read_only = True)
+    professional = ProfessionalSerializer()
 
     class Meta:
         model = Announcement
