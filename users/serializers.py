@@ -211,6 +211,14 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 
 class JobCategoriesSerializer(serializers.ModelSerializer):
     sub_type = JobSubCategoriesSerializer(many=True)
+    image = VersatileImageFieldSerializer(
+        sizes=[
+            ('full_size', 'url'),
+            ('thumbnail', 'thumbnail__100x100'),
+            ('medium_square_crop', 'crop__400x400'),
+            ('small_square_crop', 'crop__50x50')
+        ]
+    )
     class Meta:
         model = JobCategory
         fields = ("id","job_type","sub_type", "description", "image")
