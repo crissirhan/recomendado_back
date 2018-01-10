@@ -63,8 +63,9 @@ class ProfessionalSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         user_data = validated_data.pop('user', None)
-        for attr, value in user_data.items():
-            setattr(instance.user, attr, value)
+        if user_data:
+            for attr, value in user_data.items():
+                setattr(instance.user, attr, value)
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.user.save()
