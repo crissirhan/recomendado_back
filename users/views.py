@@ -20,11 +20,13 @@ from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from rest_auth.registration.views import SocialLoginView
 from django_filters import rest_framework as filters
 from rest_framework.filters import OrderingFilter
+from rest_framework.parsers import FileUploadParser
 
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
+    parser_classes = (FileUploadParser,)
 
     def partial_update(self, request, *args, **kwargs):
         instance = self.queryset.get(pk=kwargs.get('pk'))
