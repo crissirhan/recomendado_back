@@ -162,6 +162,11 @@ class JobTagSerializer(serializers.ModelSerializer):
         job_tag, created = JobTag.objects.get_or_create(job=job, **validated_data)
         return job_tag
 
+class ProfessionalAuxSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Professional
+        fields = ("id",)
+
 class AnnouncementSerializer(serializers.ModelSerializer):
     availability_display = serializers.SerializerMethodField()
     availability = fields.MultipleChoiceField(choices=Announcement.WEEKDAYS)
@@ -178,7 +183,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
     professional_id = serializers.PrimaryKeyRelatedField(source='professional',read_only=False, queryset=Professional.objects.all())
     review_count = serializers.FloatField(read_only = True)
     review_average = serializers.FloatField(read_only = True)
-    professional = ProfessionalSerializer()
+    professional = ProfessionalAuxSerializer()
 
     class Meta:
         model = Announcement
