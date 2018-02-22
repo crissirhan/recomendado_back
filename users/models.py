@@ -8,11 +8,9 @@ from multiselectfield import MultiSelectField
 from djmoney.models.fields import MoneyField
 from django.db.models import Count, Avg
 
-from versatileimagefield.fields import VersatileImageField
-
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="client")
-    profile_picture = VersatileImageField(upload_to='images/client_profile_pictures/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='images/client_profile_pictures/', blank=True, null=True)
 
     def __unicode__(self):
         return u'{f}'.format(f=self.user.username)
@@ -26,8 +24,8 @@ class Professional(models.Model):
     house_number = models.IntegerField()
     phone_regex = RegexValidator(regex=r'^\+?1?\d{8,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone_number = models.CharField(max_length = 15, validators=[phone_regex], blank=True)
-    identification = VersatileImageField(upload_to='images/professional_identification/', blank=True, null=True)
-    profile_picture = VersatileImageField(upload_to='images/professional_profile_pictures/', blank=True, null=True)
+    identification = models.ImageField(upload_to='images/professional_identification/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='images/professional_profile_pictures/', blank=True, null=True)
     experience = models.CharField(max_length=2000, blank=True, null=True)
 
     def average(self):
@@ -70,7 +68,7 @@ class Announcement(models.Model):
     price = MoneyField(max_digits=10, decimal_places=0, default_currency='CLP', null=True)
     visible = models.BooleanField(default=True)
     approved = models.BooleanField(default=True)
-    announcement_thumbnail = VersatileImageField(upload_to='images/announcement_thumbnails/', blank=True, null=True)
+    announcement_thumbnail = models.ImageField(upload_to='images/announcement_thumbnails/', blank=True, null=True)
 
     def get_weekdays(self):
         return self.WEEKDAYS
@@ -89,13 +87,13 @@ class JobTag(models.Model):
         return u'{f}'.format(f='Anuncio: ' + self.announcement.__unicode__() + '. Tipo trabajo: ' + self.job.__unicode__())
 
 class AnnouncementImage(models.Model):
-    image = VersatileImageField(upload_to='images/announcement_images/', blank=True, null=True)
+    image = models.ImageField(upload_to='images/announcement_images/', blank=True, null=True)
     announcement = models.ForeignKey('Announcement', models.CASCADE,related_name='announcement_images')
 
 class JobCategory(models.Model):
     job_type = models.CharField(max_length=50)
     description = models.CharField(max_length=500, blank=True, null=True)
-    image = VersatileImageField(upload_to='images/job_category/', blank=True, null=True)
+    image = models.ImageField(upload_to='images/job_category/', blank=True, null=True)
 
     def __unicode__(self):
         return u'{f}'.format(f=self.job_type)
@@ -104,7 +102,7 @@ class JobSubCategory(models.Model):
     job_sub_type = models.CharField(max_length=50)
     job_category = models.ForeignKey('JobCategory', models.CASCADE,related_name='sub_type')
     description = models.CharField(max_length=3000, blank=True, null=True)
-    image = VersatileImageField(upload_to='images/job_sub_category/', blank=True, null=True)
+    image = models.ImageField(upload_to='images/job_sub_category/', blank=True, null=True)
 
     def __unicode__(self):
         return u'{f}'.format(f=self.job_sub_type)
