@@ -39,9 +39,9 @@ class Professional(models.Model):
         return u'{f}'.format(f=self.user.username)
 
 class Review(models.Model):
-    #client = models.ForeignKey('Client')
-    #professional = models.ForeignKey('Professional')
-    service = models.ForeignKey('Service',related_name='review')
+    #client = models.ForeignKey('Client', models.CASCADE)
+    #professional = models.ForeignKey('Professional', models.CASCADE)
+    service = models.ForeignKey('Service', models.CASCADE,related_name='review')
     rating = models.IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
     client_comment = models.CharField(max_length=10000, blank=True, null=True)
     professional_response = models.CharField(max_length=10000, blank=True, null=True)
@@ -59,7 +59,7 @@ class Announcement(models.Model):
               ('sab', 'Sábado'),
               ('dom', 'Domingo'))
 
-    professional = models.ForeignKey('Professional',related_name='announcement')
+    professional = models.ForeignKey('Professional', models.CASCADE,related_name='announcement')
     publish_date = models.DateTimeField(null=False)
     expire_date = models.DateTimeField(null=False)
     location = models.CharField(max_length=50, null=True)
@@ -82,15 +82,15 @@ class Announcement(models.Model):
         return u'{f}'.format(f=self.professional.user.username + ' publicita trabajo entre: ' + self.publish_date.strftime(" %d %B, %Y") + ' y ' + self.expire_date.strftime(" %d %B, %Y"))
 
 class JobTag(models.Model):
-    announcement = models.ForeignKey('Announcement',related_name='job_tags')
-    job = models.ForeignKey('JobSubCategory',related_name='job')
+    announcement = models.ForeignKey('Announcement', models.CASCADE,related_name='job_tags')
+    job = models.ForeignKey('JobSubCategory', models.CASCADE,related_name='job')
 
     def __unicode__(self):
         return u'{f}'.format(f='Anuncio: ' + self.announcement.__unicode__() + '. Tipo trabajo: ' + self.job.__unicode__())
 
 class AnnouncementImage(models.Model):
     image = VersatileImageField(upload_to='images/announcement_images/', blank=True, null=True)
-    announcement = models.ForeignKey('Announcement',related_name='announcement_images')
+    announcement = models.ForeignKey('Announcement', models.CASCADE,related_name='announcement_images')
 
 class JobCategory(models.Model):
     job_type = models.CharField(max_length=50)
@@ -102,7 +102,7 @@ class JobCategory(models.Model):
 
 class JobSubCategory(models.Model):
     job_sub_type = models.CharField(max_length=50)
-    job_category = models.ForeignKey('JobCategory',related_name='sub_type')
+    job_category = models.ForeignKey('JobCategory', models.CASCADE,related_name='sub_type')
     description = models.CharField(max_length=3000, blank=True, null=True)
     image = VersatileImageField(upload_to='images/job_sub_category/', blank=True, null=True)
 
@@ -110,8 +110,8 @@ class JobSubCategory(models.Model):
         return u'{f}'.format(f=self.job_sub_type)
 
 class Service(models.Model):
-    announcement = models.ForeignKey('Announcement',related_name='service')
-    client = models.ForeignKey('Client',related_name='client')
+    announcement = models.ForeignKey('Announcement', models.CASCADE,related_name='service')
+    client = models.ForeignKey('Client', models.CASCADE,related_name='client')
     cost = MoneyField(max_digits=10, decimal_places=0, default_currency='CLP', null=True)
     creation_date = models.DateTimeField(null=False)
     contacted_date = models.DateTimeField(null=True, blank=True)
