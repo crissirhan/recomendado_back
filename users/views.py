@@ -105,7 +105,7 @@ class ProfessionalReviewList(generics.ListAPIView):
         queryset = self.get_queryset()
         serializer = ReviewSerializer(queryset, many=True)
         count = queryset.count()
-        average =  queryset.aggregate(Avg('rating')).values()[0]
+        average =  list(queryset.aggregate(Avg('rating')).values()[0])
         data = {'reviews': serializer.data}
         data.update({
             'count':count,
