@@ -131,9 +131,9 @@ STATIC_URL = '/static/'
 # http://django-rest-auth.readthedocs.io/en/latest/installation.html
 SITE_ID = 2
 
-# In order to server static files
+# In order to serve static files
 
-PROJECT_DIR = BASE_DIR#os.path.join(BASE_DIR, 'GeoYingo')
+PROJECT_DIR = BASE_DIR
 PROJECT_ROOT = BASE_DIR
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
